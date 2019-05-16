@@ -1,0 +1,5 @@
+digraph "CFG for 'Min0' function" {
+	label="CFG for 'Min0' function";
+
+	Node0x967fbe0 [shape=record,label="{entry:\l  %cmp = icmp slt i32 %arg1, %arg2\l  %arg1.arg2 = select i1 %cmp, i32 %arg1, i32 %arg2\l  ret i32 %arg1.arg2\l}"];
+}

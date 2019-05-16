@@ -1,0 +1,5 @@
+digraph "CFG for 'Move' function" {
+	label="CFG for 'Move' function";
+
+	Node0x961e970 [shape=record,label="{entry:\l  %call = tail call i32 @Pop(i32 %s1)\l  tail call void @Push(i32 %call, i32 %s2)\l  %tmp = load i32, i32* @movesdone, align 4, !tbaa !2\l  %add = add nsw i32 %tmp, 1\l  store i32 %add, i32* @movesdone, align 4, !tbaa !2\l  ret void\l}"];
+}

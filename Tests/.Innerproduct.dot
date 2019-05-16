@@ -1,0 +1,12 @@
+digraph "CFG for 'Innerproduct' function" {
+	label="CFG for 'Innerproduct' function";
+
+	Node0x9bd3750 [shape=record,label="{entry:\l  store i32 0, i32* %result, align 4, !tbaa !2\l  %idxprom = sext i32 %row to i64\l  %idxprom5 = sext i32 %column to i64\l  br label %for.body\l}"];
+	Node0x9bd3750 -> Node0x9bd3d70;
+	Node0x9bd3d70 [shape=record,label="{for.body:                                         \l  %indvars.iv = phi i64 [ 1, %entry ], [ %indvars.iv.next,\l... %for.body.for.body_crit_edge ]\l  %tmp = load i32, i32* %result, align 4, !tbaa !2\l  %arrayidx2 = getelementptr inbounds [41 x i32], [41 x i32]* %a, i64\l... %idxprom, i64 %indvars.iv\l  %tmp1 = load i32, i32* %arrayidx2, align 4, !tbaa !2\l  %arrayidx6 = getelementptr inbounds [41 x i32], [41 x i32]* %b, i64\l... %indvars.iv, i64 %idxprom5\l  %tmp2 = load i32, i32* %arrayidx6, align 4, !tbaa !2\l  %mul = mul nsw i32 %tmp2, %tmp1\l  %add = add nsw i32 %mul, %tmp\l  store i32 %add, i32* %result, align 4, !tbaa !2\l  %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1\l  %exitcond = icmp eq i64 %indvars.iv.next, 41\l  br i1 %exitcond, label %for.end, label %for.body.for.body_crit_edge\l|{<s0>T|<s1>F}}"];
+	Node0x9bd3d70:s0 -> Node0x9bd3e10;
+	Node0x9bd3d70:s1 -> Node0x9bd3dc0;
+	Node0x9bd3dc0 [shape=record,label="{for.body.for.body_crit_edge:                      \l  br label %for.body\l}"];
+	Node0x9bd3dc0 -> Node0x9bd3d70;
+	Node0x9bd3e10 [shape=record,label="{for.end:                                          \l  ret void\l}"];
+}

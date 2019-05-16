@@ -1,0 +1,19 @@
+digraph "CFG for 'Towers' function" {
+	label="CFG for 'Towers' function";
+
+	Node0x961fed0 [shape=record,label="{entry:\l  br label %for.body\l}"];
+	Node0x961fed0 -> Node0x9620390;
+	Node0x9620390 [shape=record,label="{for.body:                                         \l  %indvars.iv = phi i64 [ 1, %entry ], [ %indvars.iv.next,\l... %for.body.for.body_crit_edge ]\l  %next = getelementptr inbounds [19 x %struct.element], [19 x\l... %struct.element]* @cellspace, i64 0, i64 %indvars.iv, i32 1\l  %tmp = trunc i64 %indvars.iv to i32\l  %tmp1 = add i32 %tmp, -1\l  store i32 %tmp1, i32* %next, align 4, !tbaa !2\l  %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1\l  %exitcond = icmp eq i64 %indvars.iv.next, 19\l  br i1 %exitcond, label %for.end, label %for.body.for.body_crit_edge\l|{<s0>T|<s1>F}}"];
+	Node0x9620390:s0 -> Node0x9620430;
+	Node0x9620390:s1 -> Node0x96203e0;
+	Node0x96203e0 [shape=record,label="{for.body.for.body_crit_edge:                      \l  br label %for.body\l}"];
+	Node0x96203e0 -> Node0x9620390;
+	Node0x9620430 [shape=record,label="{for.end:                                          \l  store i32 18, i32* @freelist, align 4, !tbaa !7\l  tail call void @Init(i32 1, i32 14)\l  tail call void @Makenull(i32 2)\l  tail call void @Makenull(i32 3)\l  store i32 0, i32* @movesdone, align 4, !tbaa !7\l  tail call void @tower(i32 1, i32 2, i32 14)\l  %tmp2 = load i32, i32* @movesdone, align 4, !tbaa !7\l  %cmp1 = icmp eq i32 %tmp2, 16383\l  br i1 %cmp1, label %for.end.if.end_crit_edge, label %if.then\l|{<s0>T|<s1>F}}"];
+	Node0x9620430:s0 -> Node0x9620480;
+	Node0x9620430:s1 -> Node0x96204d0;
+	Node0x9620480 [shape=record,label="{for.end.if.end_crit_edge:                         \l  br label %if.end\l}"];
+	Node0x9620480 -> Node0x9620520;
+	Node0x96204d0 [shape=record,label="{if.then:                                          \l  %puts = tail call i32 @puts(i8* getelementptr inbounds ([18 x i8], [18 x\l... i8]* @str, i64 0, i64 0))\l  br label %if.end\l}"];
+	Node0x96204d0 -> Node0x9620520;
+	Node0x9620520 [shape=record,label="{if.end:                                           \l  %tmp3 = load i32, i32* @movesdone, align 4, !tbaa !7\l  %call2 = tail call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x\l... i8], [4 x i8]* @.str.5, i64 0, i64 0), i32 %tmp3)\l  ret void\l}"];
+}

@@ -1,0 +1,19 @@
+digraph "CFG for 'f' function" {
+	label="CFG for 'f' function";
+
+	Node0xa270540 [shape=record,label="{entry:\l  %tmp = icmp ult i32 %i, 5\l  br i1 %tmp, label %switch.lookup, label %entry.sw.epilog_crit_edge\l|{<s0>T|<s1>F}}"];
+	Node0xa270540:s0 -> Node0xa273630;
+	Node0xa270540:s1 -> Node0xa2735e0;
+	Node0xa2735e0 [shape=record,label="{entry.sw.epilog_crit_edge:                        \l  br label %sw.epilog\l}"];
+	Node0xa2735e0 -> Node0xa270d50;
+	Node0xa273630 [shape=record,label="{switch.lookup:                                    \l  %vSSA_sigma = phi i32 [ %i, %entry ]\l  %tmp1 = sext i32 %vSSA_sigma to i64\l  %switch.gep = getelementptr inbounds [5 x i32], [5 x i32]* @switch.table.f,\l... i64 0, i64 %tmp1\l  %switch.load = load i32, i32* %switch.gep, align 4\l  br label %sw.epilog\l}"];
+	Node0xa273630 -> Node0xa270d50;
+	Node0xa270d50 [shape=record,label="{sw.epilog:                                        \l  %x.0 = phi i32 [ %switch.load, %switch.lookup ], [ 9,\l... %entry.sw.epilog_crit_edge ]\l  %tmp2 = icmp ult i32 %j, 5\l  br i1 %tmp2, label %switch.lookup24, label %sw.epilog.sw.epilog16_crit_edge\l|{<s0>T|<s1>F}}"];
+	Node0xa270d50:s0 -> Node0xa271710;
+	Node0xa270d50:s1 -> Node0xa270da0;
+	Node0xa270da0 [shape=record,label="{sw.epilog.sw.epilog16_crit_edge:                  \l  br label %sw.epilog16\l}"];
+	Node0xa270da0 -> Node0xa271760;
+	Node0xa271710 [shape=record,label="{switch.lookup24:                                  \l  %vSSA_sigma1 = phi i32 [ %j, %sw.epilog ]\l  %tmp3 = sext i32 %vSSA_sigma1 to i64\l  %switch.gep25 = getelementptr inbounds [5 x i32], [5 x i32]*\l... @switch.table.f.1, i64 0, i64 %tmp3\l  %switch.load26 = load i32, i32* %switch.gep25, align 4\l  br label %sw.epilog16\l}"];
+	Node0xa271710 -> Node0xa271760;
+	Node0xa271760 [shape=record,label="{sw.epilog16:                                      \l  %.sink = phi i32 [ %switch.load26, %switch.lookup24 ], [ 8,\l... %sw.epilog.sw.epilog16_crit_edge ]\l  %add15 = add nuw nsw i32 %x.0, %.sink\l  ret i32 %add15\l}"];
+}

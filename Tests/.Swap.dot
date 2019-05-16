@@ -1,0 +1,5 @@
+digraph "CFG for 'Swap' function" {
+	label="CFG for 'Swap' function";
+
+	Node0xa4194a0 [shape=record,label="{entry:\l  %tmp = load i32, i32* %a, align 4, !tbaa !2\l  %tmp1 = load i32, i32* %b, align 4, !tbaa !2\l  store i32 %tmp1, i32* %a, align 4, !tbaa !2\l  store i32 %tmp, i32* %b, align 4, !tbaa !2\l  ret void\l}"];
+}

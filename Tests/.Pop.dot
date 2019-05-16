@@ -1,0 +1,12 @@
+digraph "CFG for 'Pop' function" {
+	label="CFG for 'Pop' function";
+
+	Node0x961d9e0 [shape=record,label="{entry:\l  %idxprom = sext i32 %s to i64\l  %arrayidx = getelementptr inbounds [4 x i32], [4 x i32]* @stack, i64 0, i64\l... %idxprom\l  %tmp = load i32, i32* %arrayidx, align 4, !tbaa !2\l  %cmp = icmp sgt i32 %tmp, 0\l  br i1 %cmp, label %if.then, label %if.else\l|{<s0>T|<s1>F}}"];
+	Node0x961d9e0:s0 -> Node0x961daa0;
+	Node0x961d9e0:s1 -> Node0x961ded0;
+	Node0x961daa0 [shape=record,label="{if.then:                                          \l  %vSSA_sigma = phi i32 [ %tmp, %entry ]\l  %idxprom3 = sext i32 %vSSA_sigma to i64\l  %discsize = getelementptr inbounds [19 x %struct.element], [19 x\l... %struct.element]* @cellspace, i64 0, i64 %idxprom3, i32 0\l  %tmp1 = load i32, i32* %discsize, align 8, !tbaa !6\l  %next = getelementptr inbounds [19 x %struct.element], [19 x\l... %struct.element]* @cellspace, i64 0, i64 %idxprom3, i32 1\l  %tmp2 = load i32, i32* %next, align 4, !tbaa !8\l  %tmp3 = load i32, i32* @freelist, align 4, !tbaa !2\l  store i32 %tmp3, i32* %next, align 4, !tbaa !8\l  store i32 %vSSA_sigma, i32* @freelist, align 4, !tbaa !2\l  store i32 %tmp2, i32* %arrayidx, align 4, !tbaa !2\l  br label %cleanup\l}"];
+	Node0x961daa0 -> Node0x961df20;
+	Node0x961ded0 [shape=record,label="{if.else:                                          \l  tail call void @Error(i8* getelementptr inbounds ([16 x i8], [16 x i8]*\l... @.str.3, i64 0, i64 0))\l  br label %cleanup\l}"];
+	Node0x961ded0 -> Node0x961df20;
+	Node0x961df20 [shape=record,label="{cleanup:                                          \l  %retval.0 = phi i32 [ %tmp1, %if.then ], [ 0, %if.else ]\l  ret i32 %retval.0\l}"];
+}

@@ -1,0 +1,12 @@
+digraph "CFG for 'Queens' function" {
+	label="CFG for 'Queens' function";
+
+	Node0x9624020 [shape=record,label="{entry:\l  br label %for.body\l}"];
+	Node0x9624020 -> Node0x961b4f0;
+	Node0x961b4f0 [shape=record,label="{for.body:                                         \l  %i.03 = phi i32 [ 1, %entry ], [ %inc, %for.body.for.body_crit_edge ]\l  tail call void @Doit()\l  %inc = add nuw nsw i32 %i.03, 1\l  %exitcond = icmp eq i32 %inc, 51\l  br i1 %exitcond, label %for.end, label %for.body.for.body_crit_edge\l|{<s0>T|<s1>F}}"];
+	Node0x961b4f0:s0 -> Node0x96246f0;
+	Node0x961b4f0:s1 -> Node0x96246a0;
+	Node0x96246a0 [shape=record,label="{for.body.for.body_crit_edge:                      \l  br label %for.body\l}"];
+	Node0x96246a0 -> Node0x961b4f0;
+	Node0x96246f0 [shape=record,label="{for.end:                                          \l  %add = add nsw i32 %run, 1\l  %call = tail call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x\l... i8], [4 x i8]* @.str.1, i64 0, i64 0), i32 %add)\l  ret void\l}"];
+}

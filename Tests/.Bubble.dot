@@ -1,0 +1,40 @@
+digraph "CFG for 'Bubble' function" {
+	label="CFG for 'Bubble' function";
+
+	Node0x8e08f80 [shape=record,label="{entry:\l  tail call void @bInitarr()\l  store i32 500, i32* @top, align 4, !tbaa !2\l  br label %while.body3.preheader\l}"];
+	Node0x8e08f80 -> Node0x8e093d0;
+	Node0x8e093d0 [shape=record,label="{while.body3.preheader:                            \l  %indvars.iv42 = phi i64 [ 500, %entry ], [ %vSSA_sigma4,\l... %while.end.while.body3.preheader_crit_edge ]\l  br label %while.body3\l}"];
+	Node0x8e093d0 -> Node0x8e098b0;
+	Node0x8e098b0 [shape=record,label="{while.body3:                                      \l  %indvars.iv = phi i64 [ 1, %while.body3.preheader ], [ %vSSA_sigma2,\l... %if.end.while.body3_crit_edge ]\l  %arrayidx = getelementptr inbounds [5001 x i32], [5001 x i32]* @sortlist,\l... i64 0, i64 %indvars.iv\l  %tmp = load i32, i32* %arrayidx, align 4, !tbaa !2\l  %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1\l  %arrayidx5 = getelementptr inbounds [5001 x i32], [5001 x i32]* @sortlist,\l... i64 0, i64 %indvars.iv.next\l  %tmp1 = load i32, i32* %arrayidx5, align 4, !tbaa !2\l  %cmp6 = icmp sgt i32 %tmp, %tmp1\l  br i1 %cmp6, label %if.then, label %while.body3.if.end_crit_edge\l|{<s0>T|<s1>F}}"];
+	Node0x8e098b0:s0 -> Node0x8e09950;
+	Node0x8e098b0:s1 -> Node0x8e09900;
+	Node0x8e09900 [shape=record,label="{while.body3.if.end_crit_edge:                     \l  br label %if.end\l}"];
+	Node0x8e09900 -> Node0x8e099a0;
+	Node0x8e09950 [shape=record,label="{if.then:                                          \l  %vSSA_sigma1 = phi i32 [ %tmp1, %while.body3 ]\l  %vSSA_sigma = phi i32 [ %tmp, %while.body3 ]\l  store i32 %vSSA_sigma1, i32* %arrayidx, align 4, !tbaa !2\l  store i32 %vSSA_sigma, i32* %arrayidx5, align 4, !tbaa !2\l  br label %if.end\l}"];
+	Node0x8e09950 -> Node0x8e099a0;
+	Node0x8e099a0 [shape=record,label="{if.end:                                           \l  %exitcond = icmp eq i64 %indvars.iv.next, %indvars.iv42\l  br i1 %exitcond, label %while.end, label %if.end.while.body3_crit_edge\l|{<s0>T|<s1>F}}"];
+	Node0x8e099a0:s0 -> Node0x8e09a40;
+	Node0x8e099a0:s1 -> Node0x8e099f0;
+	Node0x8e099f0 [shape=record,label="{if.end.while.body3_crit_edge:                     \l  %vSSA_sigma2 = phi i64 [ %indvars.iv.next, %if.end ]\l  br label %while.body3\l}"];
+	Node0x8e099f0 -> Node0x8e098b0;
+	Node0x8e09a40 [shape=record,label="{while.end:                                        \l  %vSSA_sigma3 = phi i64 [ %indvars.iv42, %if.end ]\l  %indvars.iv.next43 = add nsw i64 %vSSA_sigma3, -1\l  %cmp = icmp ugt i64 %indvars.iv.next43, 1\l  br i1 %cmp, label %while.end.while.body3.preheader_crit_edge, label\l... %while.end18\l|{<s0>T|<s1>F}}"];
+	Node0x8e09a40:s0 -> Node0x8e09a90;
+	Node0x8e09a40:s1 -> Node0x8e09ae0;
+	Node0x8e09a90 [shape=record,label="{while.end.while.body3.preheader_crit_edge:        \l  %vSSA_sigma4 = phi i64 [ %indvars.iv.next43, %while.end ]\l  br label %while.body3.preheader\l}"];
+	Node0x8e09a90 -> Node0x8e093d0;
+	Node0x8e09ae0 [shape=record,label="{while.end18:                                      \l  store i32 1, i32* @top, align 4, !tbaa !2\l  %tmp2 = load i32, i32* getelementptr inbounds ([5001 x i32], [5001 x i32]*\l... @sortlist, i64 0, i64 1), align 4, !tbaa !2\l  %tmp3 = load i32, i32* @littlest, align 4, !tbaa !2\l  %cmp19 = icmp eq i32 %tmp2, %tmp3\l  br i1 %cmp19, label %lor.lhs.false, label %while.end18.if.then21_crit_edge\l|{<s0>T|<s1>F}}"];
+	Node0x8e09ae0:s0 -> Node0x8e09b80;
+	Node0x8e09ae0:s1 -> Node0x8e09b30;
+	Node0x8e09b30 [shape=record,label="{while.end18.if.then21_crit_edge:                  \l  br label %if.then21\l}"];
+	Node0x8e09b30 -> Node0x8e09c70;
+	Node0x8e09b80 [shape=record,label="{lor.lhs.false:                                    \l  %tmp4 = load i32, i32* getelementptr inbounds ([5001 x i32], [5001 x i32]*\l... @sortlist, i64 0, i64 500), align 16, !tbaa !2\l  %tmp5 = load i32, i32* @biggest, align 4, !tbaa !2\l  %cmp20 = icmp eq i32 %tmp4, %tmp5\l  br i1 %cmp20, label %lor.lhs.false.if.end22_crit_edge, label\l... %lor.lhs.false.if.then21_crit_edge\l|{<s0>T|<s1>F}}"];
+	Node0x8e09b80:s0 -> Node0x8e09c20;
+	Node0x8e09b80:s1 -> Node0x8e09bd0;
+	Node0x8e09bd0 [shape=record,label="{lor.lhs.false.if.then21_crit_edge:                \l  br label %if.then21\l}"];
+	Node0x8e09bd0 -> Node0x8e09c70;
+	Node0x8e09c20 [shape=record,label="{lor.lhs.false.if.end22_crit_edge:                 \l  br label %if.end22\l}"];
+	Node0x8e09c20 -> Node0x8e09cc0;
+	Node0x8e09c70 [shape=record,label="{if.then21:                                        \l  %puts = tail call i32 @puts(i8* getelementptr inbounds ([18 x i8], [18 x\l... i8]* @str, i64 0, i64 0))\l  br label %if.end22\l}"];
+	Node0x8e09c70 -> Node0x8e09cc0;
+	Node0x8e09cc0 [shape=record,label="{if.end22:                                         \l  %add23 = add nsw i32 %run, 1\l  %idxprom24 = sext i32 %add23 to i64\l  %arrayidx25 = getelementptr inbounds [5001 x i32], [5001 x i32]* @sortlist,\l... i64 0, i64 %idxprom24\l  %tmp6 = load i32, i32* %arrayidx25, align 4, !tbaa !2\l  %call26 = tail call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x\l... i8], [4 x i8]* @.str.1, i64 0, i64 0), i32 %tmp6)\l  ret void\l}"];
+}

@@ -1,0 +1,19 @@
+digraph "CFG for 'Push' function" {
+	label="CFG for 'Push' function";
+
+	Node0x961a710 [shape=record,label="{entry:\l  %idxprom = sext i32 %s to i64\l  %arrayidx = getelementptr inbounds [4 x i32], [4 x i32]* @stack, i64 0, i64\l... %idxprom\l  %tmp = load i32, i32* %arrayidx, align 4, !tbaa !2\l  %cmp = icmp sgt i32 %tmp, 0\l  br i1 %cmp, label %if.then, label %entry.if.then8_crit_edge\l|{<s0>T|<s1>F}}"];
+	Node0x961a710:s0 -> Node0x961aab0;
+	Node0x961a710:s1 -> Node0x961aa60;
+	Node0x961aa60 [shape=record,label="{entry.if.then8_crit_edge:                         \l  br label %if.then8\l}"];
+	Node0x961aa60 -> Node0x961aba0;
+	Node0x961aab0 [shape=record,label="{if.then:                                          \l  %vSSA_sigma = phi i32 [ %tmp, %entry ]\l  %idxprom3 = sext i32 %vSSA_sigma to i64\l  %discsize = getelementptr inbounds [19 x %struct.element], [19 x\l... %struct.element]* @cellspace, i64 0, i64 %idxprom3, i32 0\l  %tmp1 = load i32, i32* %discsize, align 8, !tbaa !6\l  %cmp5 = icmp sgt i32 %tmp1, %i\l  br i1 %cmp5, label %if.then.if.then8_crit_edge, label %if.then6\l|{<s0>T|<s1>F}}"];
+	Node0x961aab0:s0 -> Node0x961ab00;
+	Node0x961aab0:s1 -> Node0x961ab50;
+	Node0x961ab00 [shape=record,label="{if.then.if.then8_crit_edge:                       \l  %vSSA_sigma1 = phi i32 [ %i, %if.then ]\l  br label %if.then8\l}"];
+	Node0x961ab00 -> Node0x961aba0;
+	Node0x961ab50 [shape=record,label="{if.then6:                                         \l  tail call void @Error(i8* getelementptr inbounds ([16 x i8], [16 x i8]*\l... @.str.2, i64 0, i64 0))\l  br label %if.end18\l}"];
+	Node0x961ab50 -> Node0x961abf0;
+	Node0x961aba0 [shape=record,label="{if.then8:                                         \l  %vSSA_phi = phi i32 [ %vSSA_sigma1, %if.then.if.then8_crit_edge ], [ %i,\l... %entry.if.then8_crit_edge ]\l  %call = tail call i32 @Getelement()\l  %tmp2 = load i32, i32* %arrayidx, align 4, !tbaa !2\l  %idxprom11 = sext i32 %call to i64\l  %next = getelementptr inbounds [19 x %struct.element], [19 x\l... %struct.element]* @cellspace, i64 0, i64 %idxprom11, i32 1\l  store i32 %tmp2, i32* %next, align 4, !tbaa !8\l  store i32 %call, i32* %arrayidx, align 4, !tbaa !2\l  %discsize17 = getelementptr inbounds [19 x %struct.element], [19 x\l... %struct.element]* @cellspace, i64 0, i64 %idxprom11, i32 0\l  store i32 %vSSA_phi, i32* %discsize17, align 8, !tbaa !6\l  br label %if.end18\l}"];
+	Node0x961aba0 -> Node0x961abf0;
+	Node0x961abf0 [shape=record,label="{if.end18:                                         \l  ret void\l}"];
+}

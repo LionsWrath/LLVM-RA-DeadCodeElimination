@@ -1,0 +1,5 @@
+digraph "CFG for 'Makenull' function" {
+	label="CFG for 'Makenull' function";
+
+	Node0x96196b0 [shape=record,label="{entry:\l  %idxprom = sext i32 %s to i64\l  %arrayidx = getelementptr inbounds [4 x i32], [4 x i32]* @stack, i64 0, i64\l... %idxprom\l  store i32 0, i32* %arrayidx, align 4, !tbaa !2\l  ret void\l}"];
+}

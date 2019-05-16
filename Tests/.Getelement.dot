@@ -1,0 +1,12 @@
+digraph "CFG for 'Getelement' function" {
+	label="CFG for 'Getelement' function";
+
+	Node0x9619da0 [shape=record,label="{entry:\l  %tmp = load i32, i32* @freelist, align 4, !tbaa !2\l  %cmp = icmp sgt i32 %tmp, 0\l  br i1 %cmp, label %if.then, label %if.else\l|{<s0>T|<s1>F}}"];
+	Node0x9619da0:s0 -> Node0x9619f90;
+	Node0x9619da0:s1 -> Node0x9619fe0;
+	Node0x9619f90 [shape=record,label="{if.then:                                          \l  %vSSA_sigma = phi i32 [ %tmp, %entry ]\l  %idxprom = sext i32 %vSSA_sigma to i64\l  %next = getelementptr inbounds [19 x %struct.element], [19 x\l... %struct.element]* @cellspace, i64 0, i64 %idxprom, i32 1\l  %tmp1 = load i32, i32* %next, align 4, !tbaa !6\l  store i32 %tmp1, i32* @freelist, align 4, !tbaa !2\l  br label %if.end\l}"];
+	Node0x9619f90 -> Node0x961a030;
+	Node0x9619fe0 [shape=record,label="{if.else:                                          \l  tail call void @Error(i8* getelementptr inbounds ([16 x i8], [16 x i8]*\l... @.str.1, i64 0, i64 0))\l  br label %if.end\l}"];
+	Node0x9619fe0 -> Node0x961a030;
+	Node0x961a030 [shape=record,label="{if.end:                                           \l  %temp.0 = phi i32 [ %vSSA_sigma, %if.then ], [ 0, %if.else ]\l  ret i32 %temp.0\l}"];
+}

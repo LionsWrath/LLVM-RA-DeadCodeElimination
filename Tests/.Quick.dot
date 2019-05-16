@@ -1,0 +1,19 @@
+digraph "CFG for 'Quick' function" {
+	label="CFG for 'Quick' function";
+
+	Node0x9e26b50 [shape=record,label="{entry:\l  tail call void @Initarr()\l  tail call void @Quicksort(i32* getelementptr inbounds ([5001 x i32], [5001 x\l... i32]* @sortlist, i64 0, i64 0), i32 1, i32 5000)\l  %tmp = load i32, i32* getelementptr inbounds ([5001 x i32], [5001 x i32]*\l... @sortlist, i64 0, i64 1), align 4, !tbaa !2\l  %tmp1 = load i32, i32* @littlest, align 4, !tbaa !2\l  %cmp = icmp eq i32 %tmp, %tmp1\l  br i1 %cmp, label %lor.lhs.false, label %entry.if.then_crit_edge\l|{<s0>T|<s1>F}}"];
+	Node0x9e26b50:s0 -> Node0x9e21e50;
+	Node0x9e26b50:s1 -> Node0x9e23760;
+	Node0x9e23760 [shape=record,label="{entry.if.then_crit_edge:                          \l  br label %if.then\l}"];
+	Node0x9e23760 -> Node0x9e286d0;
+	Node0x9e21e50 [shape=record,label="{lor.lhs.false:                                    \l  %tmp2 = load i32, i32* getelementptr inbounds ([5001 x i32], [5001 x i32]*\l... @sortlist, i64 0, i64 5000), align 16, !tbaa !2\l  %tmp3 = load i32, i32* @biggest, align 4, !tbaa !2\l  %cmp1 = icmp eq i32 %tmp2, %tmp3\l  br i1 %cmp1, label %lor.lhs.false.if.end_crit_edge, label\l... %lor.lhs.false.if.then_crit_edge\l|{<s0>T|<s1>F}}"];
+	Node0x9e21e50:s0 -> Node0x9e28680;
+	Node0x9e21e50:s1 -> Node0x9e21ea0;
+	Node0x9e21ea0 [shape=record,label="{lor.lhs.false.if.then_crit_edge:                  \l  br label %if.then\l}"];
+	Node0x9e21ea0 -> Node0x9e286d0;
+	Node0x9e28680 [shape=record,label="{lor.lhs.false.if.end_crit_edge:                   \l  br label %if.end\l}"];
+	Node0x9e28680 -> Node0x9e28720;
+	Node0x9e286d0 [shape=record,label="{if.then:                                          \l  %puts = tail call i32 @puts(i8* getelementptr inbounds ([17 x i8], [17 x\l... i8]* @str, i64 0, i64 0))\l  br label %if.end\l}"];
+	Node0x9e286d0 -> Node0x9e28720;
+	Node0x9e28720 [shape=record,label="{if.end:                                           \l  %add = add nsw i32 %run, 1\l  %idxprom = sext i32 %add to i64\l  %arrayidx = getelementptr inbounds [5001 x i32], [5001 x i32]* @sortlist,\l... i64 0, i64 %idxprom\l  %tmp4 = load i32, i32* %arrayidx, align 4, !tbaa !2\l  %call2 = tail call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x\l... i8], [4 x i8]* @.str.1, i64 0, i64 0), i32 %tmp4)\l  ret void\l}"];
+}

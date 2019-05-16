@@ -1,0 +1,5 @@
+digraph "CFG for 'Uniform11' function" {
+	label="CFG for 'Uniform11' function";
+
+	Node0x9684f30 [shape=record,label="{entry:\l  %tmp = load i32, i32* %iy, align 4, !tbaa !2\l  %mul = mul nsw i32 %tmp, 4855\l  %add = add nsw i32 %mul, 1731\l  %and = and i32 %add, 8191\l  store i32 %and, i32* %iy, align 4, !tbaa !2\l  %conv = sitofp i32 %and to float\l  %div = fmul float %conv, 0x3F20000000000000\l  store float %div, float* %yfl, align 4, !tbaa !6\l  ret void\l}"];
+}

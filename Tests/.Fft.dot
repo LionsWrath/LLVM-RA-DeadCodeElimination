@@ -1,0 +1,47 @@
+digraph "CFG for 'Fft' function" {
+	label="CFG for 'Fft' function";
+
+	Node0x96941a0 [shape=record,label="{entry:\l  %div = sdiv i32 %n, 2\l  %tmp = sext i32 %div to i64\l  %tmp1 = sext i32 %div to i64\l  %tmp2 = sext i32 %n to i64\l  br label %do.body\l}"];
+	Node0x96941a0 -> Node0x968f1f0;
+	Node0x968f1f0 [shape=record,label="{do.body:                                          \l  %vSSA_phi4 = phi i32 [ %vSSA_sigma3, %do.end95.do.body_crit_edge ], [ %n,\l... %entry ]\l  %vSSA_phi = phi i32 [ %vSSA_sigma6, %do.end95.do.body_crit_edge ], [ %div,\l... %entry ]\l  %l.0 = phi i32 [ 1, %entry ], [ %vSSA_sigma5, %do.end95.do.body_crit_edge ]\l  %tmp3 = sext i32 %l.0 to i64\l  br label %do.body1\l}"];
+	Node0x968f1f0 -> Node0x968f240;
+	Node0x968f240 [shape=record,label="{do.body1:                                         \l  %indvars.iv202 = phi i64 [ %vSSA_sigma1, %do.end.do.body1_crit_edge ], [\l... %tmp3, %do.body ]\l  %k.0 = phi i32 [ %tmp22, %do.end.do.body1_crit_edge ], [ 0, %do.body ]\l  %i.0 = phi i64 [ %indvars.iv.next198, %do.end.do.body1_crit_edge ], [ 1,\l... %do.body ]\l  %add22 = add nsw i32 %k.0, 1\l  %idxprom23 = sext i32 %add22 to i64\l  %rp25 = getelementptr inbounds %struct.complex, %struct.complex* %e, i64\l... %idxprom23, i32 0\l  %ip36 = getelementptr inbounds %struct.complex, %struct.complex* %e, i64\l... %idxprom23, i32 1\l  %sext = shl i64 %i.0, 32\l  %tmp4 = ashr exact i64 %sext, 32\l  %tmp5 = sext i32 %k.0 to i64\l  br label %do.body2\l}"];
+	Node0x968f240 -> Node0x968f290;
+	Node0x968f290 [shape=record,label="{do.body2:                                         \l  %indvars.iv197 = phi i64 [ %indvars.iv.next198, %do.body2.do.body2_crit_edge\l... ], [ %tmp4, %do.body1 ]\l  %rp = getelementptr inbounds %struct.complex, %struct.complex* %z, i64\l... %indvars.iv197, i32 0\l  %tmp6 = load float, float* %rp, align 4, !tbaa !2\l  %tmp7 = add nsw i64 %indvars.iv197, %tmp\l  %rp5 = getelementptr inbounds %struct.complex, %struct.complex* %z, i64\l... %tmp7, i32 0\l  %tmp8 = load float, float* %rp5, align 4, !tbaa !2\l  %add6 = fadd float %tmp6, %tmp8\l  %tmp9 = add nsw i64 %indvars.iv197, %tmp5\l  %rp10 = getelementptr inbounds %struct.complex, %struct.complex* %w, i64\l... %tmp9, i32 0\l  store float %add6, float* %rp10, align 4, !tbaa !2\l  %ip = getelementptr inbounds %struct.complex, %struct.complex* %z, i64\l... %indvars.iv197, i32 1\l  %tmp10 = load float, float* %ip, align 4, !tbaa !7\l  %ip16 = getelementptr inbounds %struct.complex, %struct.complex* %z, i64\l... %tmp7, i32 1\l  %tmp11 = load float, float* %ip16, align 4, !tbaa !7\l  %add17 = fadd float %tmp10, %tmp11\l  %ip21 = getelementptr inbounds %struct.complex, %struct.complex* %w, i64\l... %tmp9, i32 1\l  store float %add17, float* %ip21, align 4, !tbaa !7\l  %tmp12 = load float, float* %rp25, align 4, !tbaa !2\l  %tmp13 = load float, float* %rp, align 4, !tbaa !2\l  %tmp14 = load float, float* %rp5, align 4, !tbaa !2\l  %sub = fsub float %tmp13, %tmp14\l  %mul = fmul float %tmp12, %sub\l  %tmp15 = load float, float* %ip36, align 4, !tbaa !7\l  %tmp16 = load float, float* %ip, align 4, !tbaa !7\l  %tmp17 = load float, float* %ip16, align 4, !tbaa !7\l  %sub44 = fsub float %tmp16, %tmp17\l  %mul45 = fmul float %tmp15, %sub44\l  %sub46 = fsub float %mul, %mul45\l  %tmp18 = add nsw i64 %indvars.iv197, %indvars.iv202\l  %rp50 = getelementptr inbounds %struct.complex, %struct.complex* %w, i64\l... %tmp18, i32 0\l  store float %sub46, float* %rp50, align 4, !tbaa !2\l  %tmp19 = load float, float* %rp25, align 4, !tbaa !2\l  %mul63 = fmul float %sub44, %tmp19\l  %tmp20 = load float, float* %rp, align 4, !tbaa !2\l  %tmp21 = load float, float* %rp5, align 4, !tbaa !2\l  %sub75 = fsub float %tmp20, %tmp21\l  %mul76 = fmul float %tmp15, %sub75\l  %add77 = fadd float %mul63, %mul76\l  %ip81 = getelementptr inbounds %struct.complex, %struct.complex* %w, i64\l... %tmp18, i32 1\l  store float %add77, float* %ip81, align 4, !tbaa !7\l  %indvars.iv.next198 = add nsw i64 %indvars.iv197, 1\l  %cmp = icmp slt i64 %indvars.iv197, %indvars.iv202\l  br i1 %cmp, label %do.body2.do.body2_crit_edge, label %do.end\l|{<s0>T|<s1>F}}"];
+	Node0x968f290:s0 -> Node0x968f2e0;
+	Node0x968f290:s1 -> Node0x968f330;
+	Node0x968f2e0 [shape=record,label="{do.body2.do.body2_crit_edge:                      \l  br label %do.body2\l}"];
+	Node0x968f2e0 -> Node0x968f290;
+	Node0x968f330 [shape=record,label="{do.end:                                           \l  %vSSA_sigma = phi i64 [ %indvars.iv202, %do.body2 ]\l  %indvars.iv.next203 = add i64 %vSSA_sigma, %tmp3\l  %cmp85 = icmp sgt i64 %indvars.iv.next203, %tmp1\l  %tmp22 = trunc i64 %vSSA_sigma to i32\l  br i1 %cmp85, label %do.end.do.body87_crit_edge, label\l... %do.end.do.body1_crit_edge\l|{<s0>T|<s1>F}}"];
+	Node0x968f330:s0 -> Node0x968f3d0;
+	Node0x968f330:s1 -> Node0x968f380;
+	Node0x968f380 [shape=record,label="{do.end.do.body1_crit_edge:                        \l  %vSSA_sigma1 = phi i64 [ %indvars.iv.next203, %do.end ]\l  br label %do.body1\l}"];
+	Node0x968f380 -> Node0x968f240;
+	Node0x968f3d0 [shape=record,label="{do.end.do.body87_crit_edge:                       \l  %vSSA_sigma2 = phi i32 [ %vSSA_phi, %do.end ]\l  br label %do.body87\l}"];
+	Node0x968f3d0 -> Node0x968f420;
+	Node0x968f420 [shape=record,label="{do.body87:                                        \l  %indvars.iv204 = phi i64 [ %indvars.iv.next205,\l... %do.body87.do.body87_crit_edge ], [ 1, %do.end.do.body87_crit_edge ]\l  %arrayidx89 = getelementptr inbounds %struct.complex, %struct.complex* %z,\l... i64 %indvars.iv204\l  %arrayidx91 = getelementptr inbounds %struct.complex, %struct.complex* %w,\l... i64 %indvars.iv204\l  %tmp23 = bitcast %struct.complex* %arrayidx91 to i64*\l  %tmp24 = bitcast %struct.complex* %arrayidx89 to i64*\l  %tmp25 = load i64, i64* %tmp23, align 4\l  store i64 %tmp25, i64* %tmp24, align 4\l  %indvars.iv.next205 = add nuw nsw i64 %indvars.iv204, 1\l  %cmp94 = icmp slt i64 %indvars.iv204, %tmp2\l  br i1 %cmp94, label %do.body87.do.body87_crit_edge, label %do.end95\l|{<s0>T|<s1>F}}"];
+	Node0x968f420:s0 -> Node0x968f470;
+	Node0x968f420:s1 -> Node0x968f4c0;
+	Node0x968f470 [shape=record,label="{do.body87.do.body87_crit_edge:                    \l  br label %do.body87\l}"];
+	Node0x968f470 -> Node0x968f420;
+	Node0x968f4c0 [shape=record,label="{do.end95:                                         \l  %vSSA_sigma3 = phi i32 [ %vSSA_phi4, %do.body87 ]\l  %add96 = shl nsw i32 %l.0, 1\l  %cmp98 = icmp sgt i32 %add96, %vSSA_sigma2\l  br i1 %cmp98, label %for.cond.preheader, label %do.end95.do.body_crit_edge\l|{<s0>T|<s1>F}}"];
+	Node0x968f4c0:s0 -> Node0x968f560;
+	Node0x968f4c0:s1 -> Node0x968f510;
+	Node0x968f510 [shape=record,label="{do.end95.do.body_crit_edge:                       \l  %vSSA_sigma6 = phi i32 [ %vSSA_sigma2, %do.end95 ]\l  %vSSA_sigma5 = phi i32 [ %add96, %do.end95 ]\l  br label %do.body\l}"];
+	Node0x968f510 -> Node0x968f1f0;
+	Node0x968f560 [shape=record,label="{for.cond.preheader:                               \l  %cmp100195 = icmp slt i32 %vSSA_sigma3, 1\l  br i1 %cmp100195, label %for.cond.preheader.for.end_crit_edge, label\l... %for.body.preheader\l|{<s0>T|<s1>F}}"];
+	Node0x968f560:s0 -> Node0x968f5b0;
+	Node0x968f560:s1 -> Node0x968f600;
+	Node0x968f5b0 [shape=record,label="{for.cond.preheader.for.end_crit_edge:             \l  br label %for.end\l}"];
+	Node0x968f5b0 -> Node0x968f740;
+	Node0x968f600 [shape=record,label="{for.body.preheader:                               \l  %vSSA_sigma7 = phi i32 [ %vSSA_sigma3, %for.cond.preheader ]\l  %tmp26 = add i32 %vSSA_sigma7, 1\l  %wide.trip.count = zext i32 %tmp26 to i64\l  br label %for.body\l}"];
+	Node0x968f600 -> Node0x968f650;
+	Node0x968f650 [shape=record,label="{for.body:                                         \l  %indvars.iv = phi i64 [ 1, %for.body.preheader ], [ %indvars.iv.next,\l... %for.body.for.body_crit_edge ]\l  %rp103 = getelementptr inbounds %struct.complex, %struct.complex* %z, i64\l... %indvars.iv, i32 0\l  %tmp27 = load float, float* %rp103, align 4, !tbaa !2\l  %mul104 = fmul float %tmp27, %sqrinv\l  store float %mul104, float* %rp103, align 4, !tbaa !2\l  %ip111 = getelementptr inbounds %struct.complex, %struct.complex* %z, i64\l... %indvars.iv, i32 1\l  %tmp28 = load float, float* %ip111, align 4, !tbaa !7\l  %tmp29 = fmul float %tmp28, %sqrinv\l  %mul112 = fsub float -0.000000e+00, %tmp29\l  store float %mul112, float* %ip111, align 4, !tbaa !7\l  %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1\l  %exitcond = icmp eq i64 %indvars.iv.next, %wide.trip.count\l  br i1 %exitcond, label %for.body.for.end_crit_edge, label\l... %for.body.for.body_crit_edge\l|{<s0>T|<s1>F}}"];
+	Node0x968f650:s0 -> Node0x968f6f0;
+	Node0x968f650:s1 -> Node0x968f6a0;
+	Node0x968f6a0 [shape=record,label="{for.body.for.body_crit_edge:                      \l  br label %for.body\l}"];
+	Node0x968f6a0 -> Node0x968f650;
+	Node0x968f6f0 [shape=record,label="{for.body.for.end_crit_edge:                       \l  br label %for.end\l}"];
+	Node0x968f6f0 -> Node0x968f740;
+	Node0x968f740 [shape=record,label="{for.end:                                          \l  ret void\l}"];
+}

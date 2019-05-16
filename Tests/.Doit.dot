@@ -1,0 +1,40 @@
+digraph "CFG for 'Doit' function" {
+	label="CFG for 'Doit' function";
+
+	Node0x961fb80 [shape=record,label="{entry:\l  %q = alloca i32, align 4\l  %a = alloca [9 x i32], align 16\l  %b = alloca [17 x i32], align 16\l  %c = alloca [15 x i32], align 16\l  %x = alloca [9 x i32], align 16\l  %tmp = bitcast i32* %q to i8*\l  call void @llvm.lifetime.start.p0i8(i64 4, i8* nonnull %tmp) #5\l  %tmp1 = bitcast [9 x i32]* %a to i8*\l  call void @llvm.lifetime.start.p0i8(i64 36, i8* nonnull %tmp1) #5\l  %tmp2 = bitcast [17 x i32]* %b to i8*\l  call void @llvm.lifetime.start.p0i8(i64 68, i8* nonnull %tmp2) #5\l  %tmp3 = bitcast [15 x i32]* %c to i8*\l  call void @llvm.lifetime.start.p0i8(i64 60, i8* nonnull %tmp3) #5\l  %tmp4 = bitcast [9 x i32]* %x to i8*\l  call void @llvm.lifetime.start.p0i8(i64 36, i8* nonnull %tmp4) #5\l  br label %while.body\l}"];
+	Node0x961fb80 -> Node0x96200f0;
+	Node0x96200f0 [shape=record,label="{while.body:                                       \l  %indvars.iv = phi i64 [ -7, %entry ], [ %vSSA_sigma6,\l... %if.end12.while.body_crit_edge ]\l  %tmp5 = trunc i64 %indvars.iv to i32\l  %tmp6 = add i32 %tmp5, -1\l  %tmp7 = icmp ult i32 %tmp6, 8\l  br i1 %tmp7, label %if.then, label %while.body.if.end_crit_edge\l|{<s0>T|<s1>F}}"];
+	Node0x96200f0:s0 -> Node0x9620190;
+	Node0x96200f0:s1 -> Node0x9620140;
+	Node0x9620140 [shape=record,label="{while.body.if.end_crit_edge:                      \l  br label %if.end\l}"];
+	Node0x9620140 -> Node0x96201e0;
+	Node0x9620190 [shape=record,label="{if.then:                                          \l  %arrayidx = getelementptr inbounds [9 x i32], [9 x i32]* %a, i64 0, i64\l... %indvars.iv\l  store i32 1, i32* %arrayidx, align 4, !tbaa !2\l  br label %if.end\l}"];
+	Node0x9620190 -> Node0x96201e0;
+	Node0x96201e0 [shape=record,label="{if.end:                                           \l  %cmp3 = icmp sgt i64 %indvars.iv, 1\l  br i1 %cmp3, label %if.end7, label %if.end.if.then9_crit_edge\l|{<s0>T|<s1>F}}"];
+	Node0x96201e0:s0 -> Node0x9620280;
+	Node0x96201e0:s1 -> Node0x9620230;
+	Node0x9620230 [shape=record,label="{if.end.if.then9_crit_edge:                        \l  %vSSA_sigma2 = phi i64 [ %indvars.iv, %if.end ]\l  br label %if.then9\l}"];
+	Node0x9620230 -> Node0x9620370;
+	Node0x9620280 [shape=record,label="{if.end7:                                          \l  %vSSA_sigma = phi i64 [ %indvars.iv, %if.end ]\l  %arrayidx6 = getelementptr inbounds [17 x i32], [17 x i32]* %b, i64 0, i64\l... %indvars.iv\l  store i32 1, i32* %arrayidx6, align 4, !tbaa !2\l  %cmp8 = icmp slt i64 %vSSA_sigma, 8\l  br i1 %cmp8, label %if.end7.if.then9_crit_edge, label\l... %if.end7.if.end12_crit_edge\l|{<s0>T|<s1>F}}"];
+	Node0x9620280:s0 -> Node0x9620320;
+	Node0x9620280:s1 -> Node0x96202d0;
+	Node0x96202d0 [shape=record,label="{if.end7.if.end12_crit_edge:                       \l  %vSSA_sigma5 = phi i64 [ %vSSA_sigma, %if.end7 ]\l  br label %if.end12\l}"];
+	Node0x96202d0 -> Node0x96203c0;
+	Node0x9620320 [shape=record,label="{if.end7.if.then9_crit_edge:                       \l  %vSSA_sigma4 = phi i64 [ %vSSA_sigma, %if.end7 ]\l  br label %if.then9\l}"];
+	Node0x9620320 -> Node0x9620370;
+	Node0x9620370 [shape=record,label="{if.then9:                                         \l  %vSSA_phi = phi i64 [ %vSSA_sigma4, %if.end7.if.then9_crit_edge ], [\l... %vSSA_sigma2, %if.end.if.then9_crit_edge ]\l  %tmp8 = add nsw i64 %vSSA_phi, 7\l  %arrayidx11 = getelementptr inbounds [15 x i32], [15 x i32]* %c, i64 0, i64\l... %tmp8\l  store i32 1, i32* %arrayidx11, align 4, !tbaa !2\l  br label %if.end12\l}"];
+	Node0x9620370 -> Node0x96203c0;
+	Node0x96203c0 [shape=record,label="{if.end12:                                         \l  %vSSA_phi3 = phi i64 [ %vSSA_phi, %if.then9 ], [ %indvars.iv,\l... %if.end7.if.end12_crit_edge ]\l  %vSSA_phi1 = phi i64 [ %vSSA_sigma5, %if.end7.if.end12_crit_edge ], [\l... %vSSA_phi, %if.then9 ]\l  %indvars.iv.next = add nsw i64 %vSSA_phi3, 1\l  %exitcond = icmp eq i64 %indvars.iv.next, 17\l  br i1 %exitcond, label %while.end, label %if.end12.while.body_crit_edge\l|{<s0>T|<s1>F}}"];
+	Node0x96203c0:s0 -> Node0x9621600;
+	Node0x96203c0:s1 -> Node0x96215b0;
+	Node0x96215b0 [shape=record,label="{if.end12.while.body_crit_edge:                    \l  %vSSA_sigma6 = phi i64 [ %indvars.iv.next, %if.end12 ]\l  br label %while.body\l}"];
+	Node0x96215b0 -> Node0x96200f0;
+	Node0x9621600 [shape=record,label="{while.end:                                        \l  %arraydecay = getelementptr inbounds [17 x i32], [17 x i32]* %b, i64 0, i64 0\l  %arraydecay14 = getelementptr inbounds [9 x i32], [9 x i32]* %a, i64 0, i64 0\l  %arraydecay15 = getelementptr inbounds [15 x i32], [15 x i32]* %c, i64 0,\l... i64 0\l  %arraydecay16 = getelementptr inbounds [9 x i32], [9 x i32]* %x, i64 0, i64 0\l  call void @Try(i32 1, i32* nonnull %q, i32* nonnull %arraydecay, i32*\l... nonnull %arraydecay14, i32* nonnull %arraydecay15, i32* nonnull %arraydecay16)\l  %tmp9 = load i32, i32* %q, align 4, !tbaa !2\l  %tobool = icmp eq i32 %tmp9, 0\l  br i1 %tobool, label %if.then17, label %while.end.if.end18_crit_edge\l|{<s0>T|<s1>F}}"];
+	Node0x9621600:s0 -> Node0x96216a0;
+	Node0x9621600:s1 -> Node0x9621650;
+	Node0x9621650 [shape=record,label="{while.end.if.end18_crit_edge:                     \l  br label %if.end18\l}"];
+	Node0x9621650 -> Node0x96216f0;
+	Node0x96216a0 [shape=record,label="{if.then17:                                        \l  %puts = tail call i32 @puts(i8* getelementptr inbounds ([18 x i8], [18 x\l... i8]* @str, i64 0, i64 0))\l  br label %if.end18\l}"];
+	Node0x96216a0 -> Node0x96216f0;
+	Node0x96216f0 [shape=record,label="{if.end18:                                         \l  call void @llvm.lifetime.end.p0i8(i64 36, i8* nonnull %tmp4) #5\l  call void @llvm.lifetime.end.p0i8(i64 60, i8* nonnull %tmp3) #5\l  call void @llvm.lifetime.end.p0i8(i64 68, i8* nonnull %tmp2) #5\l  call void @llvm.lifetime.end.p0i8(i64 36, i8* nonnull %tmp1) #5\l  call void @llvm.lifetime.end.p0i8(i64 4, i8* nonnull %tmp) #5\l  ret void\l}"];
+}

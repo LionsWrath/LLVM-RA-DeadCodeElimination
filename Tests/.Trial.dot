@@ -1,0 +1,31 @@
+digraph "CFG for 'Trial' function" {
+	label="CFG for 'Trial' function";
+
+	Node0x88c6560 [shape=record,label="{entry:\l  %tmp = load i32, i32* @kount, align 4, !tbaa !2\l  %add = add nsw i32 %tmp, 1\l  store i32 %add, i32* @kount, align 4, !tbaa !2\l  br label %for.body\l}"];
+	Node0x88c6560 -> Node0x88c6ec0;
+	Node0x88c6ec0 [shape=record,label="{for.body:                                         \l  %indvars.iv = phi i64 [ 0, %entry ], [ %vSSA_sigma,\l... %for.inc.for.body_crit_edge ]\l  %arrayidx = getelementptr inbounds [13 x i32], [13 x i32]* @class, i64 0,\l... i64 %indvars.iv\l  %tmp1 = load i32, i32* %arrayidx, align 4, !tbaa !2\l  %idxprom1 = sext i32 %tmp1 to i64\l  %arrayidx2 = getelementptr inbounds [4 x i32], [4 x i32]* @piececount, i64\l... 0, i64 %idxprom1\l  %tmp2 = load i32, i32* %arrayidx2, align 4, !tbaa !2\l  %cmp3 = icmp eq i32 %tmp2, 0\l  br i1 %cmp3, label %for.body.for.inc_crit_edge, label %if.then\l|{<s0>T|<s1>F}}"];
+	Node0x88c6ec0:s0 -> Node0x88c6f10;
+	Node0x88c6ec0:s1 -> Node0x88c6f60;
+	Node0x88c6f10 [shape=record,label="{for.body.for.inc_crit_edge:                       \l  br label %for.inc\l}"];
+	Node0x88c6f10 -> Node0x88c70f0;
+	Node0x88c6f60 [shape=record,label="{if.then:                                          \l  %tmp3 = trunc i64 %indvars.iv to i32\l  %call = tail call i32 @Fit(i32 %tmp3, i32 %j)\l  %tobool = icmp eq i32 %call, 0\l  br i1 %tobool, label %if.then.for.inc_crit_edge, label %if.then4\l|{<s0>T|<s1>F}}"];
+	Node0x88c6f60:s0 -> Node0x88c6fb0;
+	Node0x88c6f60:s1 -> Node0x88c7000;
+	Node0x88c6fb0 [shape=record,label="{if.then.for.inc_crit_edge:                        \l  br label %for.inc\l}"];
+	Node0x88c6fb0 -> Node0x88c70f0;
+	Node0x88c7000 [shape=record,label="{if.then4:                                         \l  %tmp4 = trunc i64 %indvars.iv to i32\l  %call5 = tail call i32 @Place(i32 %tmp4, i32 %j)\l  %call6 = tail call i32 @Trial(i32 %call5)\l  %tobool7 = icmp ne i32 %call6, 0\l  %cmp8 = icmp eq i32 %call5, 0\l  %or.cond = or i1 %cmp8, %tobool7\l  br i1 %or.cond, label %if.then4.cleanup_crit_edge, label %if.else\l|{<s0>T|<s1>F}}"];
+	Node0x88c7000:s0 -> Node0x88c7050;
+	Node0x88c7000:s1 -> Node0x88c70a0;
+	Node0x88c7050 [shape=record,label="{if.then4.cleanup_crit_edge:                       \l  br label %cleanup\l}"];
+	Node0x88c7050 -> Node0x88c71e0;
+	Node0x88c70a0 [shape=record,label="{if.else:                                          \l  %tmp5 = trunc i64 %indvars.iv to i32\l  tail call void @Remove(i32 %tmp5, i32 %j)\l  br label %for.inc\l}"];
+	Node0x88c70a0 -> Node0x88c70f0;
+	Node0x88c70f0 [shape=record,label="{for.inc:                                          \l  %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1\l  %cmp = icmp ult i64 %indvars.iv.next, 13\l  br i1 %cmp, label %for.inc.for.body_crit_edge, label\l... %for.inc.cleanup_crit_edge\l|{<s0>T|<s1>F}}"];
+	Node0x88c70f0:s0 -> Node0x88c7190;
+	Node0x88c70f0:s1 -> Node0x88c7140;
+	Node0x88c7140 [shape=record,label="{for.inc.cleanup_crit_edge:                        \l  br label %cleanup\l}"];
+	Node0x88c7140 -> Node0x88c71e0;
+	Node0x88c7190 [shape=record,label="{for.inc.for.body_crit_edge:                       \l  %vSSA_sigma = phi i64 [ %indvars.iv.next, %for.inc ]\l  br label %for.body\l}"];
+	Node0x88c7190 -> Node0x88c6ec0;
+	Node0x88c71e0 [shape=record,label="{cleanup:                                          \l  %retval.0 = phi i32 [ 1, %if.then4.cleanup_crit_edge ], [ 0,\l... %for.inc.cleanup_crit_edge ]\l  ret i32 %retval.0\l}"];
+}

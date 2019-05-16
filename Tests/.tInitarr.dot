@@ -1,0 +1,26 @@
+digraph "CFG for 'tInitarr' function" {
+	label="CFG for 'tInitarr' function";
+
+	Node0x8e2e410 [shape=record,label="{entry:\l  tail call void @Initrand()\l  store i32 0, i32* @biggest, align 4, !tbaa !2\l  store i32 0, i32* @littlest, align 4, !tbaa !2\l  br label %for.body\l}"];
+	Node0x8e2e410 -> Node0x8e26e00;
+	Node0x8e26e00 [shape=record,label="{for.body:                                         \l  %indvars.iv = phi i64 [ 1, %entry ], [ %vSSA_sigma3,\l... %for.inc.for.body_crit_edge ]\l  %call = tail call i32 @Rand()\l  %conv = sext i32 %call to i64\l  %tmp = srem i64 %conv, 100000\l  %tmp1 = trunc i64 %tmp to i32\l  %conv2 = add i32 %tmp1, -50000\l  %arrayidx = getelementptr inbounds [5001 x i32], [5001 x i32]* @sortlist,\l... i64 0, i64 %indvars.iv\l  store i32 %conv2, i32* %arrayidx, align 4, !tbaa !2\l  %tmp2 = load i32, i32* @biggest, align 4, !tbaa !2\l  %cmp5 = icmp sgt i32 %conv2, %tmp2\l  br i1 %cmp5, label %for.body.for.inc.sink.split_crit_edge, label %if.else\l|{<s0>T|<s1>F}}"];
+	Node0x8e26e00:s0 -> Node0x8e26e50;
+	Node0x8e26e00:s1 -> Node0x8e26ea0;
+	Node0x8e26e50 [shape=record,label="{for.body.for.inc.sink.split_crit_edge:            \l  %vSSA_sigma = phi i32 [ %conv2, %for.body ]\l  br label %for.inc.sink.split\l}"];
+	Node0x8e26e50 -> Node0x8e26f90;
+	Node0x8e26ea0 [shape=record,label="{if.else:                                          \l  %vSSA_sigma1 = phi i32 [ %conv2, %for.body ]\l  %tmp3 = load i32, i32* @littlest, align 4, !tbaa !2\l  %cmp11 = icmp slt i32 %vSSA_sigma1, %tmp3\l  br i1 %cmp11, label %if.else.for.inc.sink.split_crit_edge, label\l... %if.else.for.inc_crit_edge\l|{<s0>T|<s1>F}}"];
+	Node0x8e26ea0:s0 -> Node0x8e26f40;
+	Node0x8e26ea0:s1 -> Node0x8e26ef0;
+	Node0x8e26ef0 [shape=record,label="{if.else.for.inc_crit_edge:                        \l  br label %for.inc\l}"];
+	Node0x8e26ef0 -> Node0x8e2fd70;
+	Node0x8e26f40 [shape=record,label="{if.else.for.inc.sink.split_crit_edge:             \l  %vSSA_sigma2 = phi i32 [ %vSSA_sigma1, %if.else ]\l  br label %for.inc.sink.split\l}"];
+	Node0x8e26f40 -> Node0x8e26f90;
+	Node0x8e26f90 [shape=record,label="{for.inc.sink.split:                               \l  %vSSA_phi = phi i32 [ %vSSA_sigma, %for.body.for.inc.sink.split_crit_edge ],\l... [ %vSSA_sigma2, %if.else.for.inc.sink.split_crit_edge ]\l  %biggest.sink = phi i32* [ @biggest, %for.body.for.inc.sink.split_crit_edge\l... ], [ @littlest, %if.else.for.inc.sink.split_crit_edge ]\l  store i32 %vSSA_phi, i32* %biggest.sink, align 4, !tbaa !2\l  br label %for.inc\l}"];
+	Node0x8e26f90 -> Node0x8e2fd70;
+	Node0x8e2fd70 [shape=record,label="{for.inc:                                          \l  %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1\l  %exitcond = icmp eq i64 %indvars.iv.next, 5001\l  br i1 %exitcond, label %for.end, label %for.inc.for.body_crit_edge\l|{<s0>T|<s1>F}}"];
+	Node0x8e2fd70:s0 -> Node0x8e2fe10;
+	Node0x8e2fd70:s1 -> Node0x8e2fdc0;
+	Node0x8e2fdc0 [shape=record,label="{for.inc.for.body_crit_edge:                       \l  %vSSA_sigma3 = phi i64 [ %indvars.iv.next, %for.inc ]\l  br label %for.body\l}"];
+	Node0x8e2fdc0 -> Node0x8e26e00;
+	Node0x8e2fe10 [shape=record,label="{for.end:                                          \l  ret void\l}"];
+}

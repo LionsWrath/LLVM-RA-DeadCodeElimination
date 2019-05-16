@@ -1,0 +1,5 @@
+digraph "CFG for 'Initrand' function" {
+	label="CFG for 'Initrand' function";
+
+	Node0x8e26ac0 [shape=record,label="{entry:\l  store i64 74755, i64* @seed, align 8, !tbaa !2\l  ret void\l}"];
+}

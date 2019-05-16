@@ -1,0 +1,19 @@
+digraph "CFG for 'Mm' function" {
+	label="CFG for 'Mm' function";
+
+	Node0x87a0dd0 [shape=record,label="{entry:\l  tail call void @Initrand()\l  tail call void @rInitmatrix([41 x double]* getelementptr inbounds ([41 x [41\l... x double]], [41 x [41 x double]]* @rma, i64 0, i64 0))\l  tail call void @rInitmatrix([41 x double]* getelementptr inbounds ([41 x [41\l... x double]], [41 x [41 x double]]* @rmb, i64 0, i64 0))\l  br label %for.cond1.preheader\l}"];
+	Node0x87a0dd0 -> Node0x87a1340;
+	Node0x87a1340 [shape=record,label="{for.cond1.preheader:                              \l  %indvars.iv24 = phi i64 [ 1, %entry ], [ %vSSA_sigma,\l... %for.inc6.for.cond1.preheader_crit_edge ]\l  %tmp = trunc i64 %indvars.iv24 to i32\l  br label %for.body3\l}"];
+	Node0x87a1340 -> Node0x87a1390;
+	Node0x87a1390 [shape=record,label="{for.body3:                                        \l  %indvars.iv = phi i64 [ 1, %for.cond1.preheader ], [ %indvars.iv.next,\l... %for.body3.for.body3_crit_edge ]\l  %arrayidx5 = getelementptr inbounds [41 x [41 x double]], [41 x [41 x\l... double]]* @rmr, i64 0, i64 %indvars.iv24, i64 %indvars.iv\l  %tmp1 = trunc i64 %indvars.iv to i32\l  tail call void @rInnerproduct(double* nonnull %arrayidx5, [41 x double]*\l... getelementptr inbounds ([41 x [41 x double]], [41 x [41 x double]]* @rma, i64\l... 0, i64 0), [41 x double]* getelementptr inbounds ([41 x [41 x double]], [41 x\l... [41 x double]]* @rmb, i64 0, i64 0), i32 %tmp, i32 %tmp1)\l  %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1\l  %exitcond = icmp eq i64 %indvars.iv.next, 41\l  br i1 %exitcond, label %for.inc6, label %for.body3.for.body3_crit_edge\l|{<s0>T|<s1>F}}"];
+	Node0x87a1390:s0 -> Node0x87a1430;
+	Node0x87a1390:s1 -> Node0x87a13e0;
+	Node0x87a13e0 [shape=record,label="{for.body3.for.body3_crit_edge:                    \l  br label %for.body3\l}"];
+	Node0x87a13e0 -> Node0x87a1390;
+	Node0x87a1430 [shape=record,label="{for.inc6:                                         \l  %indvars.iv.next25 = add nuw nsw i64 %indvars.iv24, 1\l  %exitcond26 = icmp eq i64 %indvars.iv.next25, 41\l  br i1 %exitcond26, label %for.end8, label\l... %for.inc6.for.cond1.preheader_crit_edge\l|{<s0>T|<s1>F}}"];
+	Node0x87a1430:s0 -> Node0x87a14d0;
+	Node0x87a1430:s1 -> Node0x87a1480;
+	Node0x87a1480 [shape=record,label="{for.inc6.for.cond1.preheader_crit_edge:           \l  %vSSA_sigma = phi i64 [ %indvars.iv.next25, %for.inc6 ]\l  br label %for.cond1.preheader\l}"];
+	Node0x87a1480 -> Node0x87a1340;
+	Node0x87a14d0 [shape=record,label="{for.end8:                                         \l  %add = add nsw i32 %run, 1\l  %idxprom9 = sext i32 %add to i64\l  %arrayidx13 = getelementptr inbounds [41 x [41 x double]], [41 x [41 x\l... double]]* @rmr, i64 0, i64 %idxprom9, i64 %idxprom9\l  %tmp2 = load double, double* %arrayidx13, align 8, !tbaa !2\l  %call = tail call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x\l... i8], [4 x i8]* @.str, i64 0, i64 0), double %tmp2)\l  ret void\l}"];
+}
