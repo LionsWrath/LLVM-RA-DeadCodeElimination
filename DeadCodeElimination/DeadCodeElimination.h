@@ -2,11 +2,22 @@
 #include "llvm/ADT/Statistic.h"
 #include "llvm/IR/CFG.h"
 #include "llvm/IR/Instructions.h"
-#include "llvm/Transforms/Utils/Locals.h"
+#include "llvm/IR/IRBuilder.h"
+#include "llvm/Support/raw_ostream.h"
+#include "llvm/Transforms/Utils/Local.h"
+
+#include "../RangeAnalysis/RangeAnalysis.h"
 
 namespace llvm {
 
     class DeadCodeElimination : public FunctionPass {
+    private:
+        InterProceduralRA<Cousot>* RA_;
+
+        void solveICMPInstruction(ICmpInst*);
+        void solveFCMPInstruction(FCmpInst*);
+        void modifySolvedUses(Instruction*);
+
     public:
         static char ID;
 
@@ -16,4 +27,4 @@ namespace llvm {
         bool runOnFunction(Function&) override;
     };
 
-} /* anonymous namespace end */
+}

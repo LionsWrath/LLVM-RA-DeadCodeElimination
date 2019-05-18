@@ -1,5 +1,0 @@
-digraph "CFG for 'Error' function" {
-	label="CFG for 'Error' function";
-
-	Node0x9612c10 [shape=record,label="{entry:\l  %call = tail call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([22 x\l... i8], [22 x i8]* @.str, i64 0, i64 0), i8* %emsg)\l  ret void\l}"];
-}

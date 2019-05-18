@@ -16,3 +16,4 @@ set(LLBM_LINK_COMPONENTS Core Support)
 
 add_subdirectory(RangeAnalysis)
 add_subdirectory(VSSA)
+add_subdirectory(DeadCodeElimination)

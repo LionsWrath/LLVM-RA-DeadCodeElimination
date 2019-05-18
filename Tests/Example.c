@@ -1,15 +1,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(int argc, char** argv) {
-  int i = 1;
-  int max = 0;
-  while (i < argc) {
-    int aux = atoi(argv[i]);
-    i++;
-    if (aux > max) {
-      max = aux;
+int foo1(int k) {
+    int i = 0;
+    if (k % 2) {
+        i++;
     }
-  }
-  printf("Max = %d\n", max);
+    return i & 1;
+}
+
+void foo2() {
+    int i = 0;
+    int sum = 0;
+    for (i = 0; i < 100; i++) {
+        sum += i;
+        if (i > 101) {
+            break;
+        }
+    }
+}
+
+int main(int argc, char** argv) {
+    foo1(4);
+    foo2();
+
+    return 0;
 }

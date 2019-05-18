@@ -1,6 +1,6 @@
 export LLVM_DIR=/home/lionswrath/llvm/build/9.0.0/
 
-tests=('Bubblesort' 'IntMM' 'Oscar' 'Perm' 'Puzzle' 'Queens' 'Quicksort' 'RealMM' 'Towers' 'Treesort' 'switch' 'Example')
+tests=('Example')
 
 for ((i=0; i<${#tests[@]}; i++)) do
     file=${tests[${i}]}
@@ -9,8 +9,10 @@ for ((i=0; i<${#tests[@]}; i++)) do
 
     opt -instnamer -mem2reg -break-crit-edges ${file}.bc -o ${file}.rbc
     opt -load ../build/VSSA/LLVMVSSA.so -vssa ${file}.rbc -o ${file}.vssa.rbc 
-    opt -load ../build/RangeAnalysis/LLVMRangeAnalysis.so -client-ra ${file}.vssa.rbc -disable-output
-    opt -dot-cfg ${file}.vssa.rbc -disable-output
+    opt -load ../build/DeadCodeElimination/LLVMDeadCodeElimination.so -ra-dce ${file}.vssa.rbc -o ${file}.dce.rbc
+
+    #opt -dot-cfg ${file}.vssa.rbc -disable-output
+    opt -dot-cfg ${file}.dce.rbc -disable-output
 
     rm -f ${file}.bc
     rm -f ${file}.rbc

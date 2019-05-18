@@ -1,5 +1,0 @@
-digraph "CFG for 'CreateNode' function" {
-	label="CFG for 'CreateNode' function";
-
-	Node0x8e30ea0 [shape=record,label="{entry:\l  %call = tail call noalias i8* @malloc(i64 24) #5\l  %tmp = bitcast %struct.node** %t to i8**\l  store i8* %call, i8** %tmp, align 8, !tbaa !2\l  %val = getelementptr inbounds i8, i8* %call, i64 16\l  %tmp1 = bitcast i8* %val to i32*\l  call void @llvm.memset.p0i8.i64(i8* align 8 %call, i8 0, i64 16, i1 false)\l  store i32 %n, i32* %tmp1, align 8, !tbaa !6\l  ret void\l}"];
-}
