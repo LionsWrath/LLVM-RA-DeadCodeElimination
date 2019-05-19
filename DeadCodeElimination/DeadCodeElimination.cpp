@@ -7,7 +7,7 @@ using namespace llvm;
 STATISTIC(InstructionsEliminated, "Number of Instructions Eliminated");
 STATISTIC(BasicBlocksEliminated, "Number of Basic Blocks Eliminated");
 
-void DeadCodeElimination::solveICMPInstruction(ICmpInst* I) {
+void DeadCodeElimination::solveICMPInstruction(BranchInst* BI, ICmpInst* I) {
     errs() << "Entrou Solver\n";
     
     Range range1 = RA_->getRange(I->getOperand(0));
@@ -20,62 +20,62 @@ void DeadCodeElimination::solveICMPInstruction(ICmpInst* I) {
     case CmpInst::ICMP_EQ:  /* Equal */
         errs() << "Equal\n";
         if (range1 == range2 && range1.getUpper().eq(range1.getLower())) {
-            modifySolvedUses(I); 
+            modifyBranchInst(BI, 0); 
         }
         break;
     case CmpInst::ICMP_NE:  /* Not Equal */
         errs() << "Not Equal\n";
         if (range1.getLower().ugt(range2.getUpper()) ||
                 range1.getUpper().ult(range2.getLower())) {
-            modifySolvedUses(I);
+            modifyBranchInst(BI, 0);
         }
         break;
     case CmpInst::ICMP_UGT: /* Unsigned Greater Than */
         errs() << "Unsigned Greater Than\n";
         if (range1.getLower().ugt(range2.getUpper())) {
-            modifySolvedUses(I);
+            modifyBranchInst(BI, 0);
         }
         break;
     case CmpInst::ICMP_UGE: /* Unsigned Greater or Equal */
         errs() << "Unsigned Greater or Equal\n";
         if (range1.getLower().uge(range2.getUpper())) {
-            modifySolvedUses(I);
+            modifyBranchInst(BI, 0);
         }
         break;
     case CmpInst::ICMP_ULT: /* Unsigned Less Than */
         errs() << "Unsigned Less Than\n";
         if (range1.getUpper().ult(range2.getLower())) {
-            modifySolvedUses(I);
+            modifyBranchInst(BI, 0);
         }
         break;
     case CmpInst::ICMP_ULE: /* Unsigned Less or Equal */
         errs() << "Unsigned Less of Equal\n";
         if (range1.getUpper().ule(range2.getLower())) {
-            modifySolvedUses(I);
+            modifyBranchInst(BI, 0);
         }
         break;
     case CmpInst::ICMP_SGT: /* Signed Greater Than */
         errs() << "Signed Greater Than\n";
         if (range1.getLower().sgt(range2.getUpper())) {
-            modifySolvedUses(I);
+            modifyBranchInst(BI, 0);
         }
         break;
     case CmpInst::ICMP_SGE: /* Signed Greater or Equal */
         errs() << "Signed Greater or Equal\n";
         if (range1.getLower().sge(range2.getUpper())) {
-            modifySolvedUses(I);
+            modifyBranchInst(BI, 0);
         }
         break;
     case CmpInst::ICMP_SLT: /* Signed Less Than */
         errs() << "Signed Less Than\n";
         if (range1.getUpper().slt(range2.getLower())) {
-            modifySolvedUses(I);
+            modifyBranchInst(BI, 0);
         }
         break;
     case CmpInst::ICMP_SLE: /* Signed Less or Equal */
         errs() << "Signed Less or Equal\n";
         if (range1.getUpper().sle(range2.getLower())) {
-            modifySolvedUses(I);
+            modifyBranchInst(BI, 0);
         }
         break;
     default:
@@ -83,41 +83,58 @@ void DeadCodeElimination::solveICMPInstruction(ICmpInst* I) {
     }
 }
 
-void DeadCodeElimination::solveFCMPInstruction(FCmpInst* I) {
+void DeadCodeElimination::solveFCMPInstruction(BranchInst*, FCmpInst* I) {
     // Does our range analysis apply to floats?
 }
 
-void DeadCodeElimination::modifySolvedUses(Instruction* I) {
-    errs() << "Entrou Modify\n";
+void DeadCodeElimination::modifyBranchInst(BranchInst* BI, int D) {
+    IRBuilder<> Builder(BI);
 
-    for (auto it = I->use_begin(); it != I->use_end(); ++it){
+    // Get successors of conditional branch
+    BasicBlock* Dest = BI->getSuccessor(D);
+    BasicBlock* Remo = BI->getSuccessor(!D);
 
-        auto* I = dyn_cast<Instruction>(it->get());
-        IRBuilder<> Builder(I);
-        
-        if (isa<BranchInst>(I)) {
-            errs() << "REMOVAL 1\n";
-            auto *BI = dyn_cast<BranchInst>(I);
+    // Remove predecessor
+    Remo->removePredecessor(BI->getParent());
 
-            // If this branch is uncoditional this really doesnt make sense
-            if (BI->isUnconditional())
-                return; /* SUPER ERROR */
+    // Create new branch instruction
+    Builder.CreateBr(Dest);
+    
+    // Erase instruction from parent BB
+    BI->eraseFromParent();
+}
 
-            // Sanity check to see if the condition is really a CMP
-            if (isa<CmpInst>(BI->getCondition())) {
-                errs() << "REMOVAL 2\n";
+void DeadCodeElimination::removeUnreachableBasicBlocks(Function& F) {
 
-                // Get successors of conditional branch
-                BasicBlock* Dest1 = BI->getSuccessor(0);
-                BasicBlock* Dest2 = BI->getSuccessor(1);
+    auto *EB = &(F.getEntryBlock());
+    std::vector<BasicBlock*> toRemove;
 
-                // Remove predecessor
-                Dest2->removePredecessor(BI->getParent());
+    // Don't remove the BB while iterating!
+    // This invalidate the iterator! >:(
+    for (BasicBlock& BB : F) {
 
-                Builder.CreateBr(Dest1);
-                BI->eraseFromParent();
-            }
+        // Remove if there is no predecessor and is not entry
+        if (0 == pred_size(&BB) && EB != &BB){
+            toRemove.push_back(&BB);
         }
+    }
+
+    for (BasicBlock* BB : toRemove) {
+
+        // Replace all uses of Instruction to be eliminated by UndefValues
+        for (Instruction& I : *BB) {
+            if (I.use_empty()) 
+                continue;
+
+            I.replaceAllUsesWith(UndefValue::get(I.getType()));
+        }
+
+        // Notify all successors of the block to be removed
+        for (auto *succ : successors(BB)) {
+            succ->removePredecessor(BB);
+        }
+        
+        BB->eraseFromParent();       
     }
 }
 
@@ -130,18 +147,18 @@ bool DeadCodeElimination::runOnFunction(Function &F) {
     RA_ = &getAnalysis<InterProceduralRA<Cousot>>();
 
     for (BasicBlock& BB : F) {
-        for (Instruction& I : BB) {
-            // Is an compare function?
-            if (isa<CmpInst>(&I)) {
-                auto *I_ = dyn_cast<CmpInst>(&I);
-
-                if (I_->isIntPredicate())
-                    solveICMPInstruction(dyn_cast<ICmpInst>(I_));
-                else
-                    solveFCMPInstruction(dyn_cast<FCmpInst>(I_));
+        
+        auto T = BB.getTerminator();
+        if (auto *BI = dyn_cast<BranchInst>(T)) {
+            
+            if (BI->isUnconditional()) continue;
+            if (auto *C = dyn_cast<ICmpInst>(BI->getCondition())) {
+                solveICMPInstruction(BI, C);
             }
         }
     }
+
+    removeUnreachableBasicBlocks(F);
 
     return true;
 }

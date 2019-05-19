@@ -5,6 +5,7 @@
 #include "llvm/IR/IRBuilder.h"
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Transforms/Utils/Local.h"
+#include "llvm/Transforms/Utils/BasicBlockUtils.h"
 
 #include "../RangeAnalysis/RangeAnalysis.h"
 
@@ -14,9 +15,10 @@ namespace llvm {
     private:
         InterProceduralRA<Cousot>* RA_;
 
-        void solveICMPInstruction(ICmpInst*);
-        void solveFCMPInstruction(FCmpInst*);
-        void modifySolvedUses(Instruction*);
+        void solveICMPInstruction(BranchInst*, ICmpInst*);
+        void solveFCMPInstruction(BranchInst*, FCmpInst*);
+        void modifyBranchInst(BranchInst*, int);
+        void removeUnreachableBasicBlocks(Function&);
 
     public:
         static char ID;

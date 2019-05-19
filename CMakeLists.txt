@@ -12,7 +12,7 @@ include(AddLLVM)
 add_definitions(${LLVM_DEFINITIONS})
 include_directories(${LLVM_INCLUDE_DIRS})
 
-set(LLBM_LINK_COMPONENTS Core Support)
+set(LLBM_LINK_COMPONENTS Core Support Transforms)
 
 add_subdirectory(RangeAnalysis)
 add_subdirectory(VSSA)

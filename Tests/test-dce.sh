@@ -1,6 +1,6 @@
 export LLVM_DIR=/home/lionswrath/llvm/build/9.0.0/
 
-tests=('Example')
+tests=('Example1' 'Example2')
 
 for ((i=0; i<${#tests[@]}; i++)) do
     file=${tests[${i}]}
