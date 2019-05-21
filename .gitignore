@@ -19,6 +19,7 @@ tags
 
 # Dir
 Tests/*.dot
+Tests/.*.dot
 Tests/*.pdf
 Tests/*.rbc
 build

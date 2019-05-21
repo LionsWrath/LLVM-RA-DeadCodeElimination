@@ -606,7 +606,7 @@ public:
 
   // MOD
   double getTimeDouble(StringRef key) {
-    using secs = std::chrono::duration<float>;
+    using secs = std::chrono::duration<float, std::milli>;
 
     return secs(accumulatedtimes[key]).count();
   }
@@ -643,7 +643,7 @@ public:
 typedef DenseMap<const Value *, VarNode *> VarNodes;
 
 // The Operations type.
-typedef SmallSetVector<BasicOp *, 64> GenOprs;
+typedef std::set<BasicOp *> GenOprs;
 
 // A map from variables to the operations where these variables are used.
 typedef DenseMap<const Value *, SmallPtrSet<BasicOp *, 8>> UseMap;

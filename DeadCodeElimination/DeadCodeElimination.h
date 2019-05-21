@@ -19,6 +19,7 @@ namespace llvm {
         void solveFCMPInstruction(BranchInst*, FCmpInst*);
         void modifyBranchInst(BranchInst*, int);
         void removeUnreachableBasicBlocks(Function&);
+        bool removeTriviallyDeadInstructions(Function&);
 
     public:
         static char ID;

@@ -134,8 +134,32 @@ void DeadCodeElimination::removeUnreachableBasicBlocks(Function& F) {
             succ->removePredecessor(BB);
         }
         
+        InstructionsEliminated += BB->size();
+        BasicBlocksEliminated++;
+
         BB->eraseFromParent();       
     }
+}
+
+bool DeadCodeElimination::removeTriviallyDeadInstructions(Function& F) {
+    
+    std::vector<Instruction*> toRemove;
+
+    for (BasicBlock& BB : F) {
+        for (Instruction& I : BB) {
+            if (isInstructionTriviallyDead(&I, nullptr)) {
+                toRemove.push_back(&I);
+            }
+        }
+    }
+
+    // Remove Instructions
+    for (auto *I : toRemove) {
+        InstructionsEliminated++;
+        I->eraseFromParent();
+    } 
+
+    return toRemove.size();
 }
 
 void DeadCodeElimination::getAnalysisUsage(AnalysisUsage &AU) const {
@@ -149,16 +173,29 @@ bool DeadCodeElimination::runOnFunction(Function &F) {
     for (BasicBlock& BB : F) {
         
         auto T = BB.getTerminator();
+
         if (auto *BI = dyn_cast<BranchInst>(T)) {
             
             if (BI->isUnconditional()) continue;
+
             if (auto *C = dyn_cast<ICmpInst>(BI->getCondition())) {
                 solveICMPInstruction(BI, C);
             }
         }
+
+        if (auto *SI = dyn_cast<SwitchInst>(T)) {
+        
+        }
     }
 
+    // Recursively remove trivially dead variables
+    while (removeTriviallyDeadInstructions(F));
+
+    // Remove unreachable Basic Blocks
     removeUnreachableBasicBlocks(F);
+
+    errs() << "Number of Eliminated Instructions: " << InstructionsEliminated << "\n"; 
+    errs() << "Number of Basic Blocks completely removed: " << BasicBlocksEliminated << "\n";
 
     return true;
 }
