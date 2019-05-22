@@ -21,6 +21,9 @@ void DeadCodeElimination::solveICMPInstruction(BranchInst* BI, ICmpInst* I) {
         errs() << "Equal\n";
         if (range1 == range2 && range1.getUpper().eq(range1.getLower())) {
             modifyBranchInst(BI, 0); 
+        } else if (range1.getLower().ugt(range2.getUpper()) ||
+                range1.getUpper().ult(range2.getLower())) {
+            modifyBranchInst(BI, 1);
         }
         break;
     case CmpInst::ICMP_NE:  /* Not Equal */
@@ -28,54 +31,73 @@ void DeadCodeElimination::solveICMPInstruction(BranchInst* BI, ICmpInst* I) {
         if (range1.getLower().ugt(range2.getUpper()) ||
                 range1.getUpper().ult(range2.getLower())) {
             modifyBranchInst(BI, 0);
+        } else if (range1 == range2 && 
+                range1.getUpper().eq(range1.getLower())) {
+            modifyBranchInst(BI, 1);
         }
         break;
     case CmpInst::ICMP_UGT: /* Unsigned Greater Than */
         errs() << "Unsigned Greater Than\n";
         if (range1.getLower().ugt(range2.getUpper())) {
             modifyBranchInst(BI, 0);
+        } else if (range1.getUpper().ule(range2.getLower())) {
+            modifyBranchInst(BI, 1); 
         }
         break;
     case CmpInst::ICMP_UGE: /* Unsigned Greater or Equal */
         errs() << "Unsigned Greater or Equal\n";
         if (range1.getLower().uge(range2.getUpper())) {
             modifyBranchInst(BI, 0);
+        } else if (range1.getUpper().ult(range2.getLower())) {
+            modifyBranchInst(BI, 1); 
         }
         break;
     case CmpInst::ICMP_ULT: /* Unsigned Less Than */
         errs() << "Unsigned Less Than\n";
         if (range1.getUpper().ult(range2.getLower())) {
             modifyBranchInst(BI, 0);
+        } else if (range1.getLower().uge(range2.getUpper())) {
+            modifyBranchInst(BI, 1); 
         }
         break;
     case CmpInst::ICMP_ULE: /* Unsigned Less or Equal */
         errs() << "Unsigned Less of Equal\n";
         if (range1.getUpper().ule(range2.getLower())) {
             modifyBranchInst(BI, 0);
+        } else if (range1.getLower().ugt(range2.getUpper())) {
+            modifyBranchInst(BI, 1); 
         }
         break;
     case CmpInst::ICMP_SGT: /* Signed Greater Than */
         errs() << "Signed Greater Than\n";
         if (range1.getLower().sgt(range2.getUpper())) {
             modifyBranchInst(BI, 0);
+        } else if (range1.getUpper().sle(range2.getLower())) {
+            modifyBranchInst(BI, 1);
         }
         break;
     case CmpInst::ICMP_SGE: /* Signed Greater or Equal */
         errs() << "Signed Greater or Equal\n";
         if (range1.getLower().sge(range2.getUpper())) {
             modifyBranchInst(BI, 0);
+        } else if (range1.getUpper().slt(range2.getLower())) {
+            modifyBranchInst(BI, 1);
         }
         break;
     case CmpInst::ICMP_SLT: /* Signed Less Than */
         errs() << "Signed Less Than\n";
         if (range1.getUpper().slt(range2.getLower())) {
             modifyBranchInst(BI, 0);
+        } else if (range1.getLower().sge(range2.getUpper())) {
+            modifyBranchInst(BI, 1);
         }
         break;
     case CmpInst::ICMP_SLE: /* Signed Less or Equal */
         errs() << "Signed Less or Equal\n";
         if (range1.getUpper().sle(range2.getLower())) {
             modifyBranchInst(BI, 0);
+        } else if (range1.getLower().sle(range2.getLower())) {
+            modifyBranchInst(BI, 1); 
         }
         break;
     default:
@@ -84,7 +106,7 @@ void DeadCodeElimination::solveICMPInstruction(BranchInst* BI, ICmpInst* I) {
 }
 
 void DeadCodeElimination::solveFCMPInstruction(BranchInst*, FCmpInst* I) {
-    // Does our range analysis apply to floats?
+    // Does our range analysis apply to floats? Nop.
 }
 
 void DeadCodeElimination::modifyBranchInst(BranchInst* BI, int D) {
@@ -141,25 +163,36 @@ void DeadCodeElimination::removeUnreachableBasicBlocks(Function& F) {
     }
 }
 
-bool DeadCodeElimination::removeTriviallyDeadInstructions(Function& F) {
+void DeadCodeElimination::removeTriviallyDeadInstructions(Function& F) {
     
     std::vector<Instruction*> toRemove;
 
-    for (BasicBlock& BB : F) {
-        for (Instruction& I : BB) {
-            if (isInstructionTriviallyDead(&I, nullptr)) {
-                toRemove.push_back(&I);
+    do {
+        toRemove.clear();
+        for (BasicBlock& BB : F) {
+            for (Instruction& I : BB) {
+                if (isInstructionTriviallyDead(&I, nullptr)) {
+                    toRemove.push_back(&I);
+                }
             }
         }
+
+        // Remove Instructions
+        for (auto *I : toRemove) {
+            InstructionsEliminated++;
+            I->eraseFromParent();
+        } 
+    } while (toRemove.size());
+}
+
+void DeadCodeElimination::mergeBasicBlocks(Function& F) {
+    
+    // Find a BB where it has one predecessor and its predecessor has
+    // only one successor.
+    for (BasicBlock BB : F) {
+
+    
     }
-
-    // Remove Instructions
-    for (auto *I : toRemove) {
-        InstructionsEliminated++;
-        I->eraseFromParent();
-    } 
-
-    return toRemove.size();
 }
 
 void DeadCodeElimination::getAnalysisUsage(AnalysisUsage &AU) const {
@@ -189,10 +222,13 @@ bool DeadCodeElimination::runOnFunction(Function &F) {
     }
 
     // Recursively remove trivially dead variables
-    while (removeTriviallyDeadInstructions(F));
+    removeTriviallyDeadInstructions(F);
 
     // Remove unreachable Basic Blocks
     removeUnreachableBasicBlocks(F);
+
+    // Merge Basic Blocks with one pred
+    mergeBasicBlocks(F);
 
     errs() << "Number of Eliminated Instructions: " << InstructionsEliminated << "\n"; 
     errs() << "Number of Basic Blocks completely removed: " << BasicBlocksEliminated << "\n";
