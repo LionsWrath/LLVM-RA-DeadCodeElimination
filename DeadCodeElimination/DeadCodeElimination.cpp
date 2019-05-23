@@ -185,14 +185,49 @@ void DeadCodeElimination::removeTriviallyDeadInstructions(Function& F) {
     } while (toRemove.size());
 }
 
+void DeadCodeElimination::applyConstantFold(Function& F) {
+    
+    for (BasicBlock& BB : F) {
+        ConstantFoldTerminator(&BB, true, nullptr, nullptr);       
+    }
+
+}
+
 void DeadCodeElimination::mergeBasicBlocks(Function& F) {
     
     // Find a BB where it has one predecessor and its predecessor has
     // only one successor.
-    for (BasicBlock BB : F) {
-
     
-    }
+    BasicBlock* DestBB;
+
+    do {
+        DestBB = nullptr;
+        for (BasicBlock& BB : F) {
+            BasicBlock* PBB = BB.getUniquePredecessor();
+
+            if (PBB) {
+                if (succ_size(PBB) == 1) {
+                    DestBB = &BB; 
+                    break; 
+                    // We cant find more than one because the operation will
+                    // change the BB's and this can change the BB pointers
+                }
+            }
+        }
+
+        if (DestBB) {
+            MergeBasicBlockIntoOnlyPred(DestBB, nullptr);
+        }
+    } while (DestBB);
+}
+
+int DeadCodeElimination::instNumber(Function& F) {
+    
+    int counter = 0;
+    for (BasicBlock& BB : F)
+        counter += BB.size();
+
+    return counter;
 }
 
 void DeadCodeElimination::getAnalysisUsage(AnalysisUsage &AU) const {
@@ -200,6 +235,9 @@ void DeadCodeElimination::getAnalysisUsage(AnalysisUsage &AU) const {
 }
 
 bool DeadCodeElimination::runOnFunction(Function &F) {
+
+    BasicBlocksEliminated = F.size();
+    InstructionsEliminated = instNumber(F); 
 
     RA_ = &getAnalysis<InterProceduralRA<Cousot>>();
 
@@ -209,7 +247,8 @@ bool DeadCodeElimination::runOnFunction(Function &F) {
 
         if (auto *BI = dyn_cast<BranchInst>(T)) {
             
-            if (BI->isUnconditional()) continue;
+            if (BI->isUnconditional()) 
+                continue;
 
             if (auto *C = dyn_cast<ICmpInst>(BI->getCondition())) {
                 solveICMPInstruction(BI, C);
@@ -217,18 +256,24 @@ bool DeadCodeElimination::runOnFunction(Function &F) {
         }
 
         if (auto *SI = dyn_cast<SwitchInst>(T)) {
-        
+            // What to do if is a Switch?    
         }
     }
 
-    // Recursively remove trivially dead variables
+    // Remove trivially dead variables
     removeTriviallyDeadInstructions(F);
+
+    // Apply Constant Fold
+    applyConstantFold(F);
 
     // Remove unreachable Basic Blocks
     removeUnreachableBasicBlocks(F);
 
-    // Merge Basic Blocks with one pred
+    // Merge useless Basic Blocks
     mergeBasicBlocks(F);
+
+    InstructionsEliminated -= instNumber(F);
+    BasicBlocksEliminated -= F.size();
 
     errs() << "Number of Eliminated Instructions: " << InstructionsEliminated << "\n"; 
     errs() << "Number of Basic Blocks completely removed: " << BasicBlocksEliminated << "\n";

@@ -15,11 +15,14 @@ namespace llvm {
     private:
         InterProceduralRA<Cousot>* RA_;
 
+        int instNumber(Function&);
+
         void solveICMPInstruction(BranchInst*, ICmpInst*);
         void solveFCMPInstruction(BranchInst*, FCmpInst*);
         void modifyBranchInst(BranchInst*, int);
         void removeUnreachableBasicBlocks(Function&);
         void removeTriviallyDeadInstructions(Function&);
+        void applyConstantFold(Function&);
         void mergeBasicBlocks(Function&);
 
     public:
