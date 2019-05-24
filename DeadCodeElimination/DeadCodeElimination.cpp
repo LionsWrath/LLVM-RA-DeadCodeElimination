@@ -8,13 +8,10 @@ STATISTIC(InstructionsEliminated, "Number of Instructions Eliminated");
 STATISTIC(BasicBlocksEliminated, "Number of Basic Blocks Eliminated");
 
 void DeadCodeElimination::solveICMPInstruction(BranchInst* BI, ICmpInst* I) {
-    errs() << "Entrou Solver\n";
-    
     Range range1 = RA_->getRange(I->getOperand(0));
     Range range2 = RA_->getRange(I->getOperand(1));
 
-    errs() << "Range 1: [" << range1.getLower() << ", " << range1.getUpper() << "]\n";
-    errs() << "Range 2: [" << range2.getLower() << ", " << range2.getUpper() << "]\n";
+    errs() << "Operation: ";
 
     switch (I->getPredicate()) {
     case CmpInst::ICMP_EQ:  /* Equal */
@@ -103,6 +100,10 @@ void DeadCodeElimination::solveICMPInstruction(BranchInst* BI, ICmpInst* I) {
     default:
         break;
     }
+
+
+    errs() << "    Range 1: [" << range1.getLower() << ", " << range1.getUpper() << "]\n";
+    errs() << "    Range 2: [" << range2.getLower() << ", " << range2.getUpper() << "]\n";
 }
 
 void DeadCodeElimination::solveFCMPInstruction(BranchInst*, FCmpInst* I) {
@@ -269,14 +270,15 @@ bool DeadCodeElimination::runOnFunction(Function &F) {
     // Remove unreachable Basic Blocks
     removeUnreachableBasicBlocks(F);
 
-    // Merge useless Basic Blocks
+    // Merge useless Basic Block divisions
     mergeBasicBlocks(F);
 
     InstructionsEliminated -= instNumber(F);
     BasicBlocksEliminated -= F.size();
 
-    errs() << "Number of Eliminated Instructions: " << InstructionsEliminated << "\n"; 
-    errs() << "Number of Basic Blocks completely removed: " << BasicBlocksEliminated << "\n";
+    errs() << "Function Name: " << F.getName() << "\n";
+    errs() << "    Number of Eliminated Instructions: " << InstructionsEliminated << "\n"; 
+    errs() << "    Number of Basic Blocks completely removed: " << BasicBlocksEliminated << "\n";
 
     return true;
 }
