@@ -11,11 +11,11 @@ void DeadCodeElimination::solveICMPInstruction(BranchInst* BI, ICmpInst* I) {
     Range range1 = RA_->getRange(I->getOperand(0));
     Range range2 = RA_->getRange(I->getOperand(1));
 
-    errs() << "Operation: ";
+    //errs() << "Operation: ";
 
     switch (I->getPredicate()) {
     case CmpInst::ICMP_EQ:  /* Equal */
-        errs() << "Equal\n";
+        //errs() << "Equal\n";
         if (range1 == range2 && range1.getUpper().eq(range1.getLower())) {
             modifyBranchInst(BI, 0); 
         } else if (range1.getLower().ugt(range2.getUpper()) ||
@@ -24,7 +24,7 @@ void DeadCodeElimination::solveICMPInstruction(BranchInst* BI, ICmpInst* I) {
         }
         break;
     case CmpInst::ICMP_NE:  /* Not Equal */
-        errs() << "Not Equal\n";
+        //errs() << "Not Equal\n";
         if (range1.getLower().ugt(range2.getUpper()) ||
                 range1.getUpper().ult(range2.getLower())) {
             modifyBranchInst(BI, 0);
@@ -34,7 +34,7 @@ void DeadCodeElimination::solveICMPInstruction(BranchInst* BI, ICmpInst* I) {
         }
         break;
     case CmpInst::ICMP_UGT: /* Unsigned Greater Than */
-        errs() << "Unsigned Greater Than\n";
+        //errs() << "Unsigned Greater Than\n";
         if (range1.getLower().ugt(range2.getUpper())) {
             modifyBranchInst(BI, 0);
         } else if (range1.getUpper().ule(range2.getLower())) {
@@ -42,7 +42,7 @@ void DeadCodeElimination::solveICMPInstruction(BranchInst* BI, ICmpInst* I) {
         }
         break;
     case CmpInst::ICMP_UGE: /* Unsigned Greater or Equal */
-        errs() << "Unsigned Greater or Equal\n";
+        //errs() << "Unsigned Greater or Equal\n";
         if (range1.getLower().uge(range2.getUpper())) {
             modifyBranchInst(BI, 0);
         } else if (range1.getUpper().ult(range2.getLower())) {
@@ -50,7 +50,7 @@ void DeadCodeElimination::solveICMPInstruction(BranchInst* BI, ICmpInst* I) {
         }
         break;
     case CmpInst::ICMP_ULT: /* Unsigned Less Than */
-        errs() << "Unsigned Less Than\n";
+        //errs() << "Unsigned Less Than\n";
         if (range1.getUpper().ult(range2.getLower())) {
             modifyBranchInst(BI, 0);
         } else if (range1.getLower().uge(range2.getUpper())) {
@@ -58,7 +58,7 @@ void DeadCodeElimination::solveICMPInstruction(BranchInst* BI, ICmpInst* I) {
         }
         break;
     case CmpInst::ICMP_ULE: /* Unsigned Less or Equal */
-        errs() << "Unsigned Less of Equal\n";
+        //errs() << "Unsigned Less of Equal\n";
         if (range1.getUpper().ule(range2.getLower())) {
             modifyBranchInst(BI, 0);
         } else if (range1.getLower().ugt(range2.getUpper())) {
@@ -66,7 +66,7 @@ void DeadCodeElimination::solveICMPInstruction(BranchInst* BI, ICmpInst* I) {
         }
         break;
     case CmpInst::ICMP_SGT: /* Signed Greater Than */
-        errs() << "Signed Greater Than\n";
+        //errs() << "Signed Greater Than\n";
         if (range1.getLower().sgt(range2.getUpper())) {
             modifyBranchInst(BI, 0);
         } else if (range1.getUpper().sle(range2.getLower())) {
@@ -74,7 +74,7 @@ void DeadCodeElimination::solveICMPInstruction(BranchInst* BI, ICmpInst* I) {
         }
         break;
     case CmpInst::ICMP_SGE: /* Signed Greater or Equal */
-        errs() << "Signed Greater or Equal\n";
+        //errs() << "Signed Greater or Equal\n";
         if (range1.getLower().sge(range2.getUpper())) {
             modifyBranchInst(BI, 0);
         } else if (range1.getUpper().slt(range2.getLower())) {
@@ -82,7 +82,7 @@ void DeadCodeElimination::solveICMPInstruction(BranchInst* BI, ICmpInst* I) {
         }
         break;
     case CmpInst::ICMP_SLT: /* Signed Less Than */
-        errs() << "Signed Less Than\n";
+        //errs() << "Signed Less Than\n";
         if (range1.getUpper().slt(range2.getLower())) {
             modifyBranchInst(BI, 0);
         } else if (range1.getLower().sge(range2.getUpper())) {
@@ -90,7 +90,7 @@ void DeadCodeElimination::solveICMPInstruction(BranchInst* BI, ICmpInst* I) {
         }
         break;
     case CmpInst::ICMP_SLE: /* Signed Less or Equal */
-        errs() << "Signed Less or Equal\n";
+        //errs() << "Signed Less or Equal\n";
         if (range1.getUpper().sle(range2.getLower())) {
             modifyBranchInst(BI, 0);
         } else if (range1.getLower().sle(range2.getLower())) {
@@ -101,9 +101,8 @@ void DeadCodeElimination::solveICMPInstruction(BranchInst* BI, ICmpInst* I) {
         break;
     }
 
-
-    errs() << "    Range 1: [" << range1.getLower() << ", " << range1.getUpper() << "]\n";
-    errs() << "    Range 2: [" << range2.getLower() << ", " << range2.getUpper() << "]\n";
+    //errs() << "    Range 1: [" << range1.getLower() << ", " << range1.getUpper() << "]\n";
+    //errs() << "    Range 2: [" << range2.getLower() << ", " << range2.getUpper() << "]\n";
 }
 
 void DeadCodeElimination::solveFCMPInstruction(BranchInst*, FCmpInst* I) {
@@ -277,8 +276,10 @@ bool DeadCodeElimination::runOnFunction(Function &F) {
     BasicBlocksEliminated -= F.size();
 
     errs() << "Function Name: " << F.getName() << "\n";
-    errs() << "    Number of Eliminated Instructions: " << InstructionsEliminated << "\n"; 
-    errs() << "    Number of Basic Blocks completely removed: " << BasicBlocksEliminated << "\n";
+    errs() << "    Number of Eliminated Instructions: " << 
+        InstructionsEliminated << "\n"; 
+    errs() << "    Number of Basic Blocks completely removed (or moved): " << 
+        BasicBlocksEliminated << "\n";
 
     return true;
 }
