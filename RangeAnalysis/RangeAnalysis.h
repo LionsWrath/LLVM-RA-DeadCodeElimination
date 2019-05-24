@@ -577,7 +577,7 @@ class Profile {
 public:
 
   // MOD
-  typedef std::chrono::seconds TimeValue;
+  typedef std::chrono::nanoseconds TimeValue;
 
   // Map to store accumulated times
   typedef StringMap<TimeValue> AccTimesMap;
@@ -595,9 +595,7 @@ public:
     std::chrono::nanoseconds usertime, systime;
     sys::Process::GetTimeUsage(elapsed, usertime, systime);
 
-    auto ut = std::chrono::duration_cast<std::chrono::seconds>(usertime);
-
-    return TimeValue(ut);
+    return TimeValue(usertime);
   }
 
   void updateTime(StringRef key, TimeValue &time) {
@@ -606,8 +604,7 @@ public:
 
   // MOD
   double getTimeDouble(StringRef key) {
-    using secs = std::chrono::duration<float, std::milli>;
-
+    using secs = std::chrono::duration<float>;
     return secs(accumulatedtimes[key]).count();
   }
 
