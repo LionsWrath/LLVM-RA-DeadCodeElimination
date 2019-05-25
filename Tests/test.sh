@@ -1,16 +1,22 @@
-export LLVM_DIR=/home/lionswrath/llvm/build/9.0.0/
+CLANG="clang"
+OPT="opt"
 
-tests=('Bubblesort' 'IntMM' 'Oscar' 'Perm' 'Puzzle' 'Queens' 'Quicksort' 'RealMM' 'Towers' 'Treesort' 'switch' 'Example')
+BUILD_DIR="../build"
+DCE_LIB="$BUILD_DIR/DeadCodeElimination/LLVMDeadCodeElimination.so"
+VSSA_LIB="$BUILD_DIR/VSSA/LLVMVSSA.so"
+
+tests=('Bubblesort' 'IntMM' 'Oscar' 'Perm' 'Puzzle' 'Queens' 'Quicksort' 'RealMM' 'Towers' 'Treesort' 'switch' 'Example1' 'Example2')
 
 for ((i=0; i<${#tests[@]}; i++)) do
     file=${tests[${i}]}
 
-    clang ${file}.c -o ${file}.bc -c -emit-llvm -O0
+    ${CLANG} ${file}.c -o ${file}.bc -c -emit-llvm -O0
 
-    opt -instnamer -mem2reg -break-crit-edges ${file}.bc -o ${file}.rbc
-    opt -load ../build/VSSA/LLVMVSSA.so -vssa ${file}.rbc -o ${file}.vssa.rbc 
-    opt -load ../build/RangeAnalysis/LLVMRangeAnalysis.so -client-ra ${file}.vssa.rbc -disable-output
-    opt -dot-cfg ${file}.vssa.rbc -disable-output
+    ${OPT} -instnamer -mem2reg -break-crit-edges ${file}.bc -o ${file}.rbc
+    ${OPT} -load $VSSA_LIB -vssa ${file}.rbc -o ${file}.vssa.rbc 
+    ${OPT} -load $DCE_LIB -ra-dce ${file}.vssa.rbc -o ${file}.dce.rbc
+
+    ${OPT} -dot-cfg ${file}.dce.rbc -disable-output
 
     rm -f ${file}.bc
     rm -f ${file}.rbc
