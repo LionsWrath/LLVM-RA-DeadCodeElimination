@@ -5,12 +5,12 @@ BUILD_DIR="../build"
 DCE_LIB="$BUILD_DIR/DeadCodeElimination/LLVMDeadCodeElimination.so"
 VSSA_LIB="$BUILD_DIR/VSSA/LLVMVSSA.so"
 
-tests=('Bubblesort' 'IntMM' 'Oscar' 'Perm' 'Puzzle' 'Queens' 'Quicksort' 'RealMM' 'Towers' 'Treesort' 'switch' 'Example1' 'Example2')
+tests=('Bubblesort' 'IntMM' 'Oscar' 'Perm' 'Puzzle' 'Queens' 'Quicksort' 'RealMM' 'Towers' 'Treesort' 'Example1' 'Example2')
 
 for ((i=0; i<${#tests[@]}; i++)) do
     file=${tests[${i}]}
 
-    ${CLANG} ${file}.c -o ${file}.bc -c -emit-llvm -O0
+    ${CLANG} -Xclang -disable-O0-optnone ${file}.c -o ${file}.bc -c -emit-llvm
 
     ${OPT} -instnamer -mem2reg -break-crit-edges ${file}.bc -o ${file}.rbc
     ${OPT} -load $VSSA_LIB -vssa ${file}.rbc -o ${file}.vssa.rbc 
